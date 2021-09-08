@@ -1,49 +1,95 @@
 {
-    "products": [
-        {
-            "id": 1,
-            "image": "",
-            "title": "Plain White Tee",
-            "description": "This is an example description for this T-Shirt",
-            "price": 300,
-            "currency": "php",
-            "availableSizes": ["S", "M"]
-        },
-        {
-            "id": 2,
-            "image": "",
-            "title": "Plain Red Tee",
-            "description": "This is an example description for this T-Shirt",
-            "price": 350,
-            "currency": "php",
-            "availableSizes": ["S", "M", "L"]
-        },
-        {
-            "id": 3,
-            "image": "",
-            "title": "Plain Green Tee",
-            "description": "This is an example description for this T-Shirt",
-            "price": 350,
-            "currency": "php",
-            "availableSizes": ["L", "XL"]
-        },
-        {
-            "id": 4,
-            "image": "",
-            "title": "Plain Blue Tee",
-            "description": "This is an example description for this T-Shirt",
-            "price": 350,
-            "currency": "php",
-            "availableSizes": ["XS", "S", "M"]
-        },
-        {
-            "id": 5,
-            "image": "",
-            "title": "Plain Black Tee",
-            "description": "This is an example description for this T-Shirt",
-            "price": 400,
-            "currency": "php",
-            "availableSizes": ["S", "M", "L", "XL"]
-        }
-    ]
+  "products": [
+    {
+      "id": 1,
+      "image": "https://diyprinting.com.ph/wp-content/uploads/2016/10/Polycotton-white-600x600.jpg",
+      "title": "Plain White Shirt",
+      "description": "This is an example description for this T-Shirt",
+      "price": 300,
+      "currency": "php",
+      "availableSizes": [
+        "S",
+        "M"
+      ]
+    },
+    {
+      "id": 2,
+      "image": "https://diyprinting.com.ph/wp-content/uploads/2016/10/Polycotton-Red-600x600.jpg",
+      "title": "Plain Red Shirt",
+      "description": "This is an example description for this T-Shirt",
+      "price": 350,
+      "currency": "php",
+      "availableSizes": [
+        "S",
+        "M",
+        "L"
+      ]
+    },
+    {
+      "id": 3,
+      "image": "https://diyprinting.com.ph/wp-content/uploads/2016/10/Polycotton-emerald-green-600x600.jpg",
+      "title": "Plain Green Shirt",
+      "description": "This is an example description for this T-Shirt",
+      "price": 350,
+      "currency": "php",
+      "availableSizes": [
+        "L",
+        "XL"
+      ]
+    },
+    {
+      "id": 4,
+      "image": "https://diyprinting.com.ph/wp-content/uploads/2016/10/Polycotton-Royal-blue-600x600.jpg",
+      "title": "Plain Blue Shirt",
+      "description": "This is an example description for this T-Shirt",
+      "price": 350,
+      "currency": "php",
+      "availableSizes": [
+        "XS",
+        "S",
+        "M"
+      ]
+    },
+    {
+      "id": 5,
+      "image": "https://diyprinting.com.ph/wp-content/uploads/2016/10/Polycotton-black-600x600.jpg",
+      "title": "Plain Black Shirt",
+      "description": "This is an example description for this T-Shirt",
+      "price": 400,
+      "currency": "php",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ]
+    }
+  ],
+  "cart": [
+    {
+      "productId": 2,
+      "quantity": 1,
+      "id": 1
+    },
+    {
+      "productId": 3,
+      "quantity": 1,
+      "id": 2
+    },
+    {
+      "productId": 1,
+      "quantity": 1,
+      "id": 3
+    },
+    {
+      "productId": 2,
+      "quantity": 1,
+      "id": 4
+    },
+    {
+      "productId": 1,
+      "quantity": 1,
+      "id": 5
+    }
+  ]
 }
