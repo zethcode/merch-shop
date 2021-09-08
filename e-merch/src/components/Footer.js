@@ -1,8 +1,10 @@
+import { Container, Grid } from '@material-ui/core'
+
 const Footer = () => {
     return (
-        <div className="footer">
+        <Grid item className="footer">
             <p>All rights reserved.</p>
-        </div>
+        </Grid>
     )
 }
 

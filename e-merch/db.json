@@ -1,0 +1,49 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "image": "",
+            "title": "Plain White Tee",
+            "description": "This is an example description for this T-Shirt",
+            "price": 300,
+            "currency": "php",
+            "availableSizes": ["S", "M"]
+        },
+        {
+            "id": 2,
+            "image": "",
+            "title": "Plain Red Tee",
+            "description": "This is an example description for this T-Shirt",
+            "price": 350,
+            "currency": "php",
+            "availableSizes": ["S", "M", "L"]
+        },
+        {
+            "id": 3,
+            "image": "",
+            "title": "Plain Green Tee",
+            "description": "This is an example description for this T-Shirt",
+            "price": 350,
+            "currency": "php",
+            "availableSizes": ["L", "XL"]
+        },
+        {
+            "id": 4,
+            "image": "",
+            "title": "Plain Blue Tee",
+            "description": "This is an example description for this T-Shirt",
+            "price": 350,
+            "currency": "php",
+            "availableSizes": ["XS", "S", "M"]
+        },
+        {
+            "id": 5,
+            "image": "",
+            "title": "Plain Black Tee",
+            "description": "This is an example description for this T-Shirt",
+            "price": 400,
+            "currency": "php",
+            "availableSizes": ["S", "M", "L", "XL"]
+        }
+    ]
+}
