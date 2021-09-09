@@ -22,7 +22,7 @@ const Product = ({ product, addToCart }) => {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing className={classes.cardActions}>
-                <IconButton aria-label="Add To Cart" onClick={() => addToCart(product.id, 1)} >
+                <IconButton aria-label="Add To Cart" onClick={() => addToCart(product, 1)} >
                     <AddShoppingCart />
                 </IconButton>
             </CardActions>
