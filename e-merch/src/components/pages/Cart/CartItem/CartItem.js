@@ -1,22 +1,10 @@
-import React from 'react';
-import { Typography, Button, Card, CardActions, CardContent, CardMedia, IconButton, Slide, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
-import { useState } from 'react';
+import { Typography, Button, Card, CardActions, CardContent, CardMedia, IconButton } from '@material-ui/core';
 import useStyles from './styles';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
 
-
 const CartItem = ({ item, updateCart, removeFromCart }) => {
-    const [open, setOpen] = useState(false)
     const classes = useStyles()
-
-    const handleClickOpen = () => {
-        setOpen(true)
-    }
-    
-    const handleClose = () => {
-        setOpen(false)
-    }
     
     return (
         <Card>
@@ -36,29 +24,7 @@ const CartItem = ({ item, updateCart, removeFromCart }) => {
                         <AddBoxIcon />
                     </IconButton>
                 </div>
-                <Button variant="contained" type="button" color="secondary" size="small" onClick={handleClickOpen}>Remove</Button>
-                <Dialog
-                    open={open}
-                    keepMounted
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-slide-title"
-                    aria-describedby="alert-dialog-slide-description"
-                >
-                    <DialogTitle id="alert-dialog-slide-title">Remove Item</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-slide-description">
-                            Are you sure you want to remove this item from your cart?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose} color="secondary">
-                            Cancel
-                        </Button>
-                        <Button color="primary" variant="contained" onClick={() => removeFromCart(item.id)} >
-                            Yes
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                <Button variant="contained" type="button" color="secondary" size="small" onClick={() => removeFromCart(item.id)}>Remove</Button>
             </CardActions>
         </Card>
     )
