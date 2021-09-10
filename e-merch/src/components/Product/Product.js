@@ -7,11 +7,11 @@ const Product = ({ product, addToCart }) => {
 
     return (
         <Card className={classes.root}>
-            <CardMedia className={classes.media} image={product.image} title={product.title} />
+            <CardMedia className={classes.media} image={product.image} title={product.name} />
             <CardContent>
                 <div className={classes.cardContent}>
                     <Typography variant="h6" gutterBottom>
-                        {product.title}
+                        {product.name}
                     </Typography>
                     <Typography variant="h6" >
                         &#8369;&nbsp;{product.price}

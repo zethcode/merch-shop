@@ -2,7 +2,9 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { makeStyles, ThemeProvider, createTheme } from '@material-ui/core';
 import { NavBar, Main, Footer, NotFound, Cart } from './components';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import { collection, getDocs } from 'firebase/firestore/lite';
+import db from "./firebase";
 
 function App() {
   // Styles
@@ -32,13 +34,22 @@ function App() {
   // API Calls and Methods
   const [products, setProducts] = useState([])
   const [cart, setCart] = useState([])
-  
+
   // Products
   const getProducts = async () => {
-    console.log(process.env.REACT_APP_SHOP_API_URL)
-    const response = await fetch(process.env.REACT_APP_SHOP_API_URL + "/products")
+    // Get a list of cities from your database
+    const productsCol = collection(db, 'products');
+    const productSnapshot = await getDocs(productsCol);
     
-    setProducts(await response.json())
+    if (!productSnapshot.empty) {
+      const productList = productSnapshot.docs.map(doc => { return {...doc.data(), id: doc.id} });
+
+      console.log("product list: ", productList)
+      setProducts(productList);
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("Document does not exist!");
+    }
   };
 
   // Cart

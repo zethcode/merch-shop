@@ -14,7 +14,7 @@ const Main = ({ products, addToCart }) => {
         justifyContent="center"
         style={{minHeight: '50vh'}}>
           {products.map((product) => (
-            <Grid item key={product.id} xs={12} sm={6} md={4} lg={2}>
+            <Grid item key={product.id} xs={6} sm={4} md={3} lg={2}>
               <Product product={product} addToCart={addToCart} />
             </Grid>
           ))}

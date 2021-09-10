@@ -42,7 +42,7 @@ const Cart = ({ cart, updateCart, removeFromCart }) => {
         <Grid container spacing={3}>
             {cart.map((item) => {
                 return (
-                    <Grid item xs={12} sm={4} key={item.product.id}>
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={item.product.id}>
                         <CartItem item={item} updateCart={updateCart} removeFromCart={removeFromCart}/>
                     </Grid>
                 )
