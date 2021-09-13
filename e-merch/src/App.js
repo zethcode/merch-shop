@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { makeStyles, ThemeProvider, createTheme } from '@material-ui/core';
 import { NavBar, Main, Footer, NotFound, Cart } from './components';
 import { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore/lite';
+import { query, where, collection, doc, setDoc, getDoc, getDocs } from 'firebase/firestore/lite';
 import db from "./firebase";
 
 function App() {
@@ -34,30 +34,51 @@ function App() {
   // API Calls and Methods
   const [products, setProducts] = useState([])
   const [cart, setCart] = useState([])
+  const [productsLoading, setProductsLoading] = useState(true)
+  const [cartLoading, setCartLoading] = useState(true)
 
   // Products
   const getProducts = async () => {
-    // Get a list of cities from your database
-    const productsCol = collection(db, 'products');
-    const productSnapshot = await getDocs(productsCol);
+    // Get a list of products from your database
+    const productsCol = collection(db, 'products')
+    const productsSnapshot = await getDocs(productsCol)
     
-    if (!productSnapshot.empty) {
-      const productList = productSnapshot.docs.map(doc => { return {...doc.data(), id: doc.id} });
+    if (!productsSnapshot.empty) {
+      const productsList = productsSnapshot.docs.map(doc => { return {...doc.data(), id: doc.id} })
 
-      console.log("product list: ", productList)
-      setProducts(productList);
+      console.log("The products", productsList)
+      setProducts(productsList)
+      setProductsLoading(false)
     } else {
       // doc.data() will be undefined in this case
-      console.log("Document does not exist!");
+      console.log("Product documents does not exist!")
     }
   };
 
   // Cart
-  const getCart = async () => {
-    const response = await fetch(process.env.REACT_APP_SHOP_API_URL + "/cart")
-    const data = await response.json()
+  const getCart = async (userId) => {
+    // Get the list of cart items from your database
+    userId = "user-arckie"
+    const cartQuery = await query(collection(db, "cart"), where("userID", "==", userId))
+    const docSnap = await getDocs(cartQuery)
+    const items = []
+    
+    if (!docSnap.empty) {
+      for (const document of docSnap.docs) {
+        // Query the products collection here by product id then push product to item
+        const productRef = doc(db, "products", document.data().productID);
+        const productSnap = await getDoc(productRef);
 
-    setCart(data)
+        items.push({ product: productSnap.data(), ...document.data(), id: document.id })
+      }
+
+      console.log("The data", items);
+      setCart(items)
+      setCartLoading(false)
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("Cart document does not exist!");
+    }
   }
   
   const addToCart = async (product, quantity) => {
@@ -128,8 +149,8 @@ function App() {
         <ThemeProvider theme={theme}>
           <NavBar cartTotal={cart.length} />
           <Switch>
-            <Route exact path="/" component={() => <Main products={products} addToCart={addToCart} />} />
-            <Route exact path="/cart" component={() => <Cart cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} />} />
+            <Route exact path="/" component={() => <Main products={products} addToCart={addToCart} loading={productsLoading} />} />
+            <Route exact path="/cart" component={() => <Cart cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} loading={cartLoading} />} />
             <Route component={NotFound}/>
           </Switch>
         </ThemeProvider>

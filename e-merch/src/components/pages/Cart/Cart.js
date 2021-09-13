@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import useStyles from './styles';
 import CartItem from './CartItem/CartItem';
 import { Link } from 'react-router-dom';
+import Loading from '../../Loading';
 
-const Cart = ({ cart, updateCart, removeFromCart }) => {
+const Cart = ({ cart, updateCart, removeFromCart, loading }) => {
     const classes = useStyles()
     const [subTotal, setSubTotal] = useState(0)
     const [open, setOpen] = useState(false)
@@ -42,7 +43,7 @@ const Cart = ({ cart, updateCart, removeFromCart }) => {
         <Grid container spacing={3}>
             {cart.map((item) => {
                 return (
-                    <Grid item xs={12} sm={6} md={4} lg={3} key={item.product.id}>
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
                         <CartItem item={item} updateCart={updateCart} removeFromCart={removeFromCart}/>
                     </Grid>
                 )
@@ -89,7 +90,7 @@ const Cart = ({ cart, updateCart, removeFromCart }) => {
         <Container>
             <div className={classes.toolbar} />
             <Typography className={classes.title} variant="h4" gutterBottom>Shopping Cart</Typography>
-            { !cart.length ? <EmptyCart /> : <FilledCart /> }
+            { loading ? <Loading component="Cart" /> : (!cart.length ? <EmptyCart /> : <FilledCart />) }
         </Container>
     )
 }

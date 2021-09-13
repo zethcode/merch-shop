@@ -1,14 +1,16 @@
 import { Grid } from '@material-ui/core';
+import Loading from '../../Loading';
 import Product from '../../Product/Product';
 import useStyles from './styles';
 
-const Main = ({ products, addToCart }) => {
+const Main = ({ products, addToCart, loading }) => {
   const classes = useStyles();
 
   return (
     <main className={classes.content}>
       <div className={classes.toolbar} />
-      <Grid 
+      { loading ? <Loading component="Products" /> :
+        <Grid 
         container
         spacing={4}
         justifyContent="center"
@@ -19,6 +21,7 @@ const Main = ({ products, addToCart }) => {
             </Grid>
           ))}
       </Grid>
+      }
     </main>
   )
 }

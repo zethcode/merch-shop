@@ -8,9 +8,9 @@ const CartItem = ({ item, updateCart, removeFromCart }) => {
     
     return (
         <Card>
-            <CardMedia image={item.product.image} alt={item.product.title} className={classes.media} />
+            <CardMedia image={item.product.image} alt={item.product.name} className={classes.media} />
             <CardContent className={classes.cardContent}>
-                <Typography variant="h6">{item.product.title}</Typography>
+                <Typography variant="h6">{item.product.name}</Typography>
                 <Typography variant="h6">&#8369;&nbsp;{item.product.price}</Typography>
             </CardContent>
             <CardActions className={classes.CardActions}>
