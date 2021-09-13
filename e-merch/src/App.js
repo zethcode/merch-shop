@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { makeStyles, ThemeProvider, createTheme } from '@material-ui/core';
 import { NavBar, Main, Footer, NotFound, Cart } from './components';
 import { useState, useEffect } from 'react';
-import { query, where, collection, doc, setDoc, getDoc, getDocs } from 'firebase/firestore/lite';
+import { query, where, collection, doc, setDoc, getDoc, getDocs, addDoc, updateDoc, deleteDoc } from 'firebase/firestore/lite';
 import db from "./firebase";
 
 function App() {
@@ -46,7 +46,6 @@ function App() {
     if (!productsSnapshot.empty) {
       const productsList = productsSnapshot.docs.map(doc => { return {...doc.data(), id: doc.id} })
 
-      console.log("The products", productsList)
       setProducts(productsList)
       setProductsLoading(false)
     } else {
@@ -72,7 +71,6 @@ function App() {
         items.push({ product: productSnap.data(), ...document.data(), id: document.id })
       }
 
-      console.log("The data", items);
       setCart(items)
       setCartLoading(false)
     } else {
@@ -81,19 +79,42 @@ function App() {
     }
   }
   
-  const addToCart = async (product, quantity) => {
-    // Add a validation to check if item is already in cart
-    
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ "product": product, "quantity": quantity })
+  const addToCart = async (userId, productId) => {
+    // Check if productId is in cart, if it is then abort procedure and return "already in cart" message
+
+    // If product is not in cart, then proceed here
+    const cartRef = collection(db, "cart")
+    const cartQuery = await query(cartRef, where("userID", "==", userId), where("productID", "==", productId))
+    const cartSnap = await getDocs(cartQuery);
+        
+    if (cartSnap.empty) {
+      const addCartRef = doc(cartRef)
+      const data = {productID: productId, userID: userId, quantity: 1}
+      
+      await setDoc(addCartRef, data)
+      setCart([...cart, data])
+
+      // Show bootstrap equivalent of toaster with message added to cart! Or any animation
+    } else {
+      // Show bootstrap equivalent of toaster with message already in cart! Or any animation
+      alert("This item is already in your cart!")
     }
 
-    const response = await fetch(process.env.REACT_APP_SHOP_API_URL + "/cart", requestOptions)
-    const data = await response.json()
+    // for (const document of cartSnap.docs) {
+    //   // Query the products collection here by product id then push product to item
+    //   const newCartRef = doc(cartRef);
+    //   const docSet = await setDoc(newCartRef, data);
+      
+    //   console.log(document.id, " => ", document.data());
 
-    setCart([...cart, data])
+    //   // setCart(data)
+    // }
+    
+    // cartSnap.forEach((doc) => {
+    //   // doc.data() is never undefined for query doc snapshots
+
+    //   // later...
+    // });
   }
 
   const updateCart = async (cartItem, quantity) => {
