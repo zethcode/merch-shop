@@ -37,6 +37,15 @@ function App() {
   const [productsLoading, setProductsLoading] = useState(true)
   const [cartLoading, setCartLoading] = useState(true)
 
+  // Snackbar constants
+  const [alertProps, setAlertProps] = useState({})
+
+  // Snackbar Alert handlers
+  const handleClose = () => {
+      // setOpen(false);
+      setAlertProps({ open: false });
+  };
+
   // Products
   const getProducts = async () => {
     // Get a list of products from your database
@@ -93,28 +102,21 @@ function App() {
       
       await setDoc(addCartRef, data)
       setCart([...cart, data])
-
-      // Show bootstrap equivalent of toaster with message added to cart! Or any animation
+      // setAddStatus(true)
+      setAlertProps({
+        open: true,
+        addStatus: true
+      })
     } else {
       // Show bootstrap equivalent of toaster with message already in cart! Or any animation
-      alert("This item is already in your cart!")
+      setAlertProps({
+        open: true,
+        addStatus: false
+      })
     }
 
-    // for (const document of cartSnap.docs) {
-    //   // Query the products collection here by product id then push product to item
-    //   const newCartRef = doc(cartRef);
-    //   const docSet = await setDoc(newCartRef, data);
-      
-    //   console.log(document.id, " => ", document.data());
-
-    //   // setCart(data)
-    // }
-    
-    // cartSnap.forEach((doc) => {
-    //   // doc.data() is never undefined for query doc snapshots
-
-    //   // later...
-    // });
+    // setTransition(() => Transition)
+    // setOpen(true)
   }
 
   const updateCart = async (cartItem, quantity) => {
@@ -170,7 +172,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <NavBar cartTotal={cart.length} />
           <Switch>
-            <Route exact path="/" component={() => <Main products={products} addToCart={addToCart} loading={productsLoading} />} />
+            <Route exact path="/" component={() => <Main products={products} addToCart={addToCart} loading={productsLoading} alertProps={alertProps} handleClose={handleClose} />} />
             <Route exact path="/cart" component={() => <Cart cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} loading={cartLoading} />} />
             <Route component={NotFound}/>
           </Switch>

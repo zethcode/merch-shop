@@ -3,7 +3,7 @@ import Loading from '../../Loading';
 import Product from '../../Product/Product';
 import useStyles from './styles';
 
-const Main = ({ products, addToCart, loading }) => {
+const Main = ({ products, addToCart, loading, alertProps, handleClose }) => {
   const classes = useStyles();
 
   return (
@@ -17,7 +17,7 @@ const Main = ({ products, addToCart, loading }) => {
         style={{minHeight: '50vh'}}>
           {products.map((product) => (
             <Grid item key={product.id} xs={6} sm={4} md={3} lg={2}>
-              <Product product={product} addToCart={addToCart} />
+              <Product product={product} addToCart={addToCart} alertProps={alertProps} handleClose={handleClose} />
             </Grid>
           ))}
       </Grid>
