@@ -1,5 +1,4 @@
-import { Card, CardMedia, CardContent, CardActions, Typography, IconButton, Snackbar, Slide } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+import { Card, CardMedia, CardContent, CardActions, Typography, IconButton } from '@material-ui/core';
 import { AddShoppingCart } from '@material-ui/icons';
 import useStyles from './styles';
 import SnackbarAlert from '../SnackbarAlert';

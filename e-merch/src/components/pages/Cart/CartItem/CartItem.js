@@ -15,7 +15,6 @@ const CartItem = ({ item, updateCart, removeFromCart }) => {
             </CardContent>
             <CardActions className={classes.CardActions}>
                 <div className={classes.buttons}>
-                    {/* <IconButton aria-label="Add To Cart" onClick={() => addToCart(product, 1)} > */}
                     <IconButton aria-label="Subtract Quantity" size="medium" disabled={item.quantity === 1} onClick={() => updateCart(item, item.quantity - 1)}>
                         <IndeterminateCheckBoxIcon />
                     </IconButton>

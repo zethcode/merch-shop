@@ -1,9 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore/lite';
-// Follow this pattern to import other Firebase services
-// import { } from 'firebase/<service>';
 
-// TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBXYRCWPfym0rOJVrhh9l5hTV0NJu__wao",
   authDomain: "merch-shop-a28ac.firebaseapp.com",

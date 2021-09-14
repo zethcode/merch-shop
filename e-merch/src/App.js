@@ -42,13 +42,11 @@ function App() {
 
   // Snackbar Alert handlers
   const handleClose = () => {
-      // setOpen(false);
       setAlertProps({ open: false });
   };
 
   // Products
   const getProducts = async () => {
-    // Get a list of products from your database
     const productsCol = collection(db, 'products')
     const productsSnapshot = await getDocs(productsCol)
     
@@ -58,14 +56,12 @@ function App() {
       setProducts(productsList)
       setProductsLoading(false)
     } else {
-      // doc.data() will be undefined in this case
       console.log("Product documents does not exist!")
     }
   };
 
   // Cart
   const getCart = async (userId) => {
-    // Get the list of cart items from your database
     userId = "user-arckie"
     const cartQuery = await query(collection(db, "cart"), where("userID", "==", userId))
     const docSnap = await getDocs(cartQuery)
@@ -73,7 +69,6 @@ function App() {
     
     if (!docSnap.empty) {
       for (const document of docSnap.docs) {
-        // Query the products collection here by product id then push product to item
         const productRef = doc(db, "products", document.data().productID);
         const productSnap = await getDoc(productRef);
 
@@ -83,15 +78,11 @@ function App() {
       setCart(items)
       setCartLoading(false)
     } else {
-      // doc.data() will be undefined in this case
       console.log("Cart document does not exist!");
     }
   }
   
   const addToCart = async (userId, productId) => {
-    // Check if productId is in cart, if it is then abort procedure and return "already in cart" message
-
-    // If product is not in cart, then proceed here
     const cartRef = collection(db, "cart")
     const cartQuery = await query(cartRef, where("userID", "==", userId), where("productID", "==", productId))
     const cartSnap = await getDocs(cartQuery);
@@ -102,21 +93,16 @@ function App() {
       
       await setDoc(addCartRef, data)
       setCart([...cart, data])
-      // setAddStatus(true)
       setAlertProps({
         open: true,
         addStatus: true
       })
     } else {
-      // Show bootstrap equivalent of toaster with message already in cart! Or any animation
       setAlertProps({
         open: true,
         addStatus: false
       })
     }
-
-    // setTransition(() => Transition)
-    // setOpen(true)
   }
 
   const updateCart = async (cartItem, quantity) => {
