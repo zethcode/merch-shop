@@ -39,10 +39,12 @@ function App() {
 
   // Snackbar constants
   const [alertProps, setAlertProps] = useState({})
+  const [cartAlertProps, setCartAlertProps] = useState({})
 
   // Snackbar Alert handlers
   const handleClose = () => {
       setAlertProps({ open: false });
+      setCartAlertProps({ open: false });
   };
 
   // Products
@@ -107,17 +109,19 @@ function App() {
 
   const updateCart = async (cartItem, quantity) => {
     // Add validation here
-
+    const cartRef = doc(db, "cart", cartItem.id)
+    const cartSnap = await getDoc(cartRef)
     cartItem.quantity = quantity
-    const requestOptions = {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(cartItem)
+
+    if (cartSnap.exists()) {
+      await updateDoc(cartRef, { quantity: quantity })
+      setCart([...cart])
+    } else {
+      setCartAlertProps({
+        open: true,
+        addStatus: false
+      })
     }
-
-    await fetch(process.env.REACT_APP_SHOP_API_URL + "/cart/" + cartItem.id, requestOptions)
-
-    setCart([...cart])
   }
   
   const removeFromCart = async (cartId) => {
@@ -159,7 +163,7 @@ function App() {
           <NavBar cartTotal={cart.length} />
           <Switch>
             <Route exact path="/" component={() => <Main products={products} addToCart={addToCart} loading={productsLoading} alertProps={alertProps} handleClose={handleClose} />} />
-            <Route exact path="/cart" component={() => <Cart cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} loading={cartLoading} />} />
+            <Route exact path="/cart" component={() => <Cart cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} loading={cartLoading} alertProps={cartAlertProps} handleSnackbarClose={handleClose} />} />
             <Route component={NotFound}/>
           </Switch>
         </ThemeProvider>

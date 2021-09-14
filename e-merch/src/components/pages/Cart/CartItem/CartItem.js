@@ -2,9 +2,21 @@ import { Typography, Button, Card, CardActions, CardContent, CardMedia, IconButt
 import useStyles from './styles';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
+import SnackbarAlert from '../../../SnackbarAlert';
+import { useEffect, useState } from 'react';
 
-const CartItem = ({ item, updateCart, removeFromCart }) => {
+const CartItem = ({ item, updateCart, removeFromCart, alertProps, handleClose }) => {
     const classes = useStyles()
+    const [initialLoad, setInitialLoad] = useState(true)
+    
+    // To close the Snackbar on component load
+    // (fixes the problem where snackbars open status stay open if the page loads a different component and comes back to this component)
+    useEffect(() => {
+        if (!initialLoad) {
+            alertProps.open = false
+        }
+        setInitialLoad(false)
+    }, [alertProps, initialLoad])
     
     return (
         <Card>
@@ -22,6 +34,9 @@ const CartItem = ({ item, updateCart, removeFromCart }) => {
                     <IconButton aria-label="Add Quantity" size="medium" onClick={() => updateCart(item, item.quantity + 1)}>
                         <AddBoxIcon />
                     </IconButton>
+                    {!alertProps.addStatus &&
+                    <SnackbarAlert alertProps={alertProps} handleClose={handleClose} severity="error" variant="filled" message="An error has occcured!" />
+                }
                 </div>
                 <Button variant="contained" type="button" color="secondary" size="small" onClick={() => removeFromCart(item.id)}>Remove</Button>
             </CardActions>

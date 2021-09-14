@@ -2,10 +2,15 @@ import { Card, CardMedia, CardContent, CardActions, Typography, IconButton } fro
 import { AddShoppingCart } from '@material-ui/icons';
 import useStyles from './styles';
 import SnackbarAlert from '../SnackbarAlert';
+import { useEffect } from 'react';
 
 const Product = ({ product, addToCart, alertProps, handleClose }) => {
     const classes = useStyles()
     const userId = 'user-arckie'
+
+    useEffect(() => {
+        alertProps.open = false
+    })
     
     return (
         <Card className={classes.root}>
