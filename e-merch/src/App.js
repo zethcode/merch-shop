@@ -62,7 +62,8 @@ function App() {
     }
   };
 
-  // Cart
+  // Cart handlers
+  // Fetch cart collection by user id
   const getCart = async (userId) => {
     userId = "user-arckie"
     const cartQuery = await query(collection(db, "cart"), where("userID", "==", userId))
@@ -78,23 +79,27 @@ function App() {
       }
 
       setCart(items)
-      setCartLoading(false)
     } else {
-      console.log("Cart document does not exist!");
+      console.log("Cart documents does not exist!");
+      setCart({})
     }
+
+    setCartLoading(false)
   }
   
-  const addToCart = async (userId, productId) => {
+  // Add product to cart by user id
+  const addToCart = async (userId, product) => {
     const cartRef = collection(db, "cart")
-    const cartQuery = await query(cartRef, where("userID", "==", userId), where("productID", "==", productId))
+    const cartQuery = await query(cartRef, where("userID", "==", userId), where("productID", "==", product.id))
     const cartSnap = await getDocs(cartQuery);
         
     if (cartSnap.empty) {
       const addCartRef = doc(cartRef)
-      const data = {productID: productId, userID: userId, quantity: 1}
+      const data = { productID: product.id, userID: userId, quantity: 1 }
       
       await setDoc(addCartRef, data)
-      setCart([...cart, data])
+      const cartData = { ...data, product: product, id: addCartRef.id }
+      setCart([...cart, cartData])
       setAlertProps({
         open: true,
         addStatus: true
@@ -107,8 +112,8 @@ function App() {
     }
   }
 
+  // Update product quantity from cart by cart id
   const updateCart = async (cartItem, quantity) => {
-    // Add validation here
     const cartRef = doc(db, "cart", cartItem.id)
     const cartSnap = await getDoc(cartRef)
     cartItem.quantity = quantity
@@ -124,32 +129,52 @@ function App() {
     }
   }
   
+  // Remove product from user cart by product id
   const removeFromCart = async (cartId) => {
-    // Add validation here
-    const requestOptions = {
-      method: 'DELETE',
+    const cartRef = doc(db, "cart", cartId)
+    const cartSnap = await getDoc(cartRef)
+
+    if (cartSnap.exists()) {
+      await deleteDoc(cartRef)
+      setCart(cart.filter((item) => item.id !== cartId))
+    } else {
+      setCartAlertProps({
+        open: true,
+        addStatus: false
+      })
     }
-
-    await fetch(process.env.REACT_APP_SHOP_API_URL + "/cart/" + cartId, requestOptions)
-    
-    setCart(cart.filter((item) => item.id !== cartId))
   }
-
-  /*
+  
   // Enable authentication here, maybe it's time to jump to firebase from here. Before implementing this empty cart function
-  const emptyCart = async (cartId) => {
-    // Add validation here
+  const emptyCart = async (userId) => {
+    const cartRef = collection(db, "cart")
+    const cartQuery = await query(cartRef, where("userID", "==", userId))
+    const cartSnap = await getDocs(cartQuery)
 
-    const requestOptions = {
-      method: 'DELETE',
+    if (!cartSnap.empty) {
+      for (const document of cartSnap.docs) {
+        const cartItemRef = doc(cartRef, document.id)
+        const cartItemSnap = await getDoc(cartItemRef)
+
+        if (cartItemSnap.exists()) {
+          await deleteDoc(cartItemRef)
+        }
+      }
+
+      setCart([])
+      setCartAlertProps({
+        open: true,
+        addStatus: false,
+        delete: true
+      })
+    } else {
+      setCartAlertProps({
+        open: true,
+        addStatus: false,
+        delete: false
+      })
     }
-
-    const response = await fetch(process.env.REACT_APP_SHOP_API_URL + "/cart/" + cartId, requestOptions)
-    const data = response.json()
-
-    setCart([...cart, data])
   }
-  */
 
   useEffect(() => {
     getProducts()
@@ -163,7 +188,7 @@ function App() {
           <NavBar cartTotal={cart.length} />
           <Switch>
             <Route exact path="/" component={() => <Main products={products} addToCart={addToCart} loading={productsLoading} alertProps={alertProps} handleClose={handleClose} />} />
-            <Route exact path="/cart" component={() => <Cart cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} loading={cartLoading} alertProps={cartAlertProps} handleSnackbarClose={handleClose} />} />
+            <Route exact path="/cart" component={() => <Cart /* userInfo={userInfo} */ cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} emptyCart={emptyCart} loading={cartLoading} alertProps={cartAlertProps} handleSnackbarClose={handleClose} />} />
             <Route component={NotFound}/>
           </Switch>
         </ThemeProvider>

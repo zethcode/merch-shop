@@ -2,16 +2,32 @@ import { Card, CardMedia, CardContent, CardActions, Typography, IconButton } fro
 import { AddShoppingCart } from '@material-ui/icons';
 import useStyles from './styles';
 import SnackbarAlert from '../SnackbarAlert';
-import { useEffect } from 'react';
+import LoadingBackdrop from '../LoadingBackdrop';
+import { useEffect, useState } from 'react';
 
-const Product = ({ product, addToCart, alertProps, handleClose }) => {
+const Product = ({ userId, product, addToCart, alertProps, handleClose }) => {
+    userId = 'user-arckie'
     const classes = useStyles()
-    const userId = 'user-arckie'
+    const [initialLoad, setInitialLoad] = useState(true)
+    const [openBackdrop, setOpenBackdrop] = useState(false);
 
     useEffect(() => {
-        alertProps.open = false
-    })
+        if (!initialLoad) {
+            alertProps.open = false
+        }
+        setInitialLoad(false)
+        handleBackdropClose()
+    }, [alertProps, initialLoad])
     
+    // Backdrop handlers
+    const handleBackdropClose = () => {
+        setOpenBackdrop(false)
+    };
+    
+    const handleBackdropOpen = () => {
+        setOpenBackdrop(true)
+    }
+
     return (
         <Card className={classes.root}>
             <CardMedia className={classes.media} image={product.image} title={product.name} />
@@ -29,7 +45,7 @@ const Product = ({ product, addToCart, alertProps, handleClose }) => {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing className={classes.cardActions}>
-                <IconButton aria-label="Add To Cart" onClick={() => {addToCart(userId, product.id)}} >
+                <IconButton aria-label="Add To Cart" onClick={() => { handleBackdropOpen(); addToCart(userId, product); }} >
                     <AddShoppingCart />
                 </IconButton>
                 {alertProps.addStatus ?
@@ -37,6 +53,7 @@ const Product = ({ product, addToCart, alertProps, handleClose }) => {
                     :
                     <SnackbarAlert alertProps={alertProps} handleClose={handleClose} severity="error" variant="filled" message="The item is already in your cart!" />
                 }
+                <LoadingBackdrop blackdropCLass={classes.backdrop} openBackdrop={openBackdrop} />
             </CardActions>
         </Card>
     )
