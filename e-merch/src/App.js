@@ -1,37 +1,60 @@
 import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { makeStyles, ThemeProvider, createTheme } from '@material-ui/core';
 import { NavBar, Main, Footer, NotFound, Cart } from './components';
 import { useState, useEffect } from 'react';
 import { query, where, collection, doc, setDoc, getDoc, getDocs, addDoc, updateDoc, deleteDoc } from 'firebase/firestore/lite';
-import db from "./firebase";
+import db, { AuthContextProvider, useAuthState } from "./firebase";
+import Authenticate from './components/pages/Authentication/Authenticate';
+
+// Authentication
+const AuthenticatedRoute = ({ component: C, ...props }) => {
+  const { isAuthenticated } = useAuthState()
+  return (
+    <Route 
+      {...props}
+      render={routeProps =>
+        isAuthenticated ? <C {...routeProps} /> : <Redirect to="/authenticate" />}
+    />
+  )
+}
+
+const UnauthenticatedRoute = ({ component: C, ...props }) => {
+  const { isAuthenticated } = useAuthState()
+  return (
+    <Route
+      {...props}
+      render={routeProps =>
+        !isAuthenticated ? <C {...routeProps} /> : <Redirect to="/" />
+      }
+    />
+  )
+}
+
+// Styles
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1
+  },
+  menuButton: {
+    marginRight: theme.spacing(2)
+  },
+  title: {
+    flexGrow: 1
+  }
+}));
+
+const theme = createTheme({
+  typography: {
+    fontFamily: [
+      "Montserrat", 
+      "sans-serif"
+    ].join(',')
+  }
+})
 
 function App() {
-  // Styles
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1
-    },
-    menuButton: {
-      marginRight: theme.spacing(2)
-    },
-    title: {
-      flexGrow: 1
-    }
-  }));
-
-  const theme = createTheme({
-    typography: {
-      fontFamily: [
-        "Montserrat", 
-        "sans-serif"
-      ].join(',')
-    }
-  })
-
   const classes = useStyles();
-  
-  // API Calls and Methods
   const [products, setProducts] = useState([])
   const [cart, setCart] = useState([])
   const [productsLoading, setProductsLoading] = useState(true)
@@ -183,17 +206,20 @@ function App() {
 
   return (
     <div className={classes.root}>
-      <Router>
-        <ThemeProvider theme={theme}>
-          <NavBar cartTotal={cart.length} />
-          <Switch>
-            <Route exact path="/" component={() => <Main products={products} addToCart={addToCart} loading={productsLoading} alertProps={alertProps} handleClose={handleClose} />} />
-            <Route exact path="/cart" component={() => <Cart /* userInfo={userInfo} */ cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} emptyCart={emptyCart} loading={cartLoading} alertProps={cartAlertProps} handleSnackbarClose={handleClose} />} />
-            <Route component={NotFound}/>
-          </Switch>
-        </ThemeProvider>
-        <Footer />
-      </Router>
+      <AuthContextProvider>
+        <Router>
+          <ThemeProvider theme={theme}>
+            <NavBar cartTotal={cart.length} />
+            <Switch>
+              <UnauthenticatedRoute exact path="/authenticate" component={Authenticate} />
+              <UnauthenticatedRoute exact path="/" component={() => <Main products={products} addToCart={addToCart} loading={productsLoading} alertProps={alertProps} handleClose={handleClose} />} />
+              <AuthenticatedRoute exact path="/cart" component={() => <Cart /* userInfo={userInfo} */ cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} emptyCart={emptyCart} loading={cartLoading} alertProps={cartAlertProps} handleSnackbarClose={handleClose} />} />
+              <Route component={NotFound}/>
+            </Switch>
+          </ThemeProvider>
+          <Footer />
+        </Router>
+      </AuthContextProvider>
     </div>
   );
 }

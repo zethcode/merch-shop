@@ -2,9 +2,19 @@ import { Link } from 'react-router-dom';
 import { AppBar, Typography, Button, IconButton, Badge, Toolbar } from '@material-ui/core';
 import { ShoppingCart } from '@material-ui/icons';
 import useStyles from './styles';
+import { getAuth, signOut } from '@firebase/auth';
+import { useAuthState } from '../../firebase';
 
 const NavBar = ({ cartTotal }) => {
-  const classes = useStyles();
+  const classes = useStyles()
+
+  // const { user } = useAuthState()
+
+  // console.log('user data here', user)
+
+  /*
+  <button onClic={() => signOut(getAuth())}>Sign Out</button>
+  */
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
@@ -23,7 +33,7 @@ const NavBar = ({ cartTotal }) => {
               </Badge>
             </IconButton>
         </div>
-        <Button color="inherit">
+        <Button color="inherit" component={Link} to='/cart'>
           Login
         </Button>
       </Toolbar>
