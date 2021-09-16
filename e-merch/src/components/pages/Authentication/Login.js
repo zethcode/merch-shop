@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FormControl, Grid, TextField, FormGroup, Button, InputLabel, Input, InputAdornment, IconButton, Typography, Link } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 
-const Login = ({ classes, handleLoginView, handleLoginSubmit }) => {
+const Login = ({ classes, handleLoginView, handleLoginSubmit, authLogo }) => {
     const [values, setValues] = useState({
         password: '',
         showPassword: false,
@@ -24,8 +24,13 @@ const Login = ({ classes, handleLoginView, handleLoginSubmit }) => {
     return (
         <FormGroup onSubmit={handleLoginSubmit}>
             <Grid className={classes.container} container direction="column" justifyContent="space-around" spacing={2}>
-                <Typography variant="h4" align="center">Shop Now</Typography>
-                <Typography variant="caption" align="center">Sign in with your account to start shopping!</Typography>
+                
+                <Grid item align="center">
+                    <img className={classes.authLogo} alt="tabp-logo" src={authLogo} />
+                    <Typography variant="h4" align="center">Shop Now</Typography>
+                    <Typography variant="caption" align="center">Sign in with your account to start shopping!</Typography>
+                </Grid>
+                
 
                 <FormControl className={classes.formControl}>
                     <TextField 

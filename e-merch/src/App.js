@@ -50,6 +50,20 @@ const theme = createTheme({
       "Montserrat", 
       "sans-serif"
     ].join(',')
+  },
+  palette: {
+    primary: {
+      light: '#50D2D8',
+      main: '#29B3B9',
+      dark: '#1F878C',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#D85650',
+      main: '#B93029',
+      dark: '#8C241F',
+      contrastText: '#fff',
+    },
   }
 })
 

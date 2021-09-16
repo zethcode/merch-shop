@@ -12,9 +12,9 @@ const Main = ({ products, addToCart, loading, alertProps, handleClose }) => {
       { loading ? <Loading component="Products" /> :
         <Grid 
         container
-        spacing={4}
+        spacing={3}
         justifyContent="center"
-        style={{minHeight: '50vh'}}>
+        style={{minHeight: '40vh'}}>
           {products.map((product) => (
             <Grid item key={product.id} xs={6} sm={4} md={3} lg={2}>
               <Product product={product} addToCart={addToCart} alertProps={alertProps} handleClose={handleClose} />

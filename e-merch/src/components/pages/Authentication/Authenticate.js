@@ -6,6 +6,7 @@ import useStyles from './styles';
 import { Container, Paper } from '@material-ui/core';
 import SignUp from './SignUp';
 import Login from './Login';
+import authLogo from './../../../assets/tabp-black-on-transparent.png';
 
 const Authenticate = () => {
     const classes = useStyles()
@@ -57,8 +58,8 @@ const Authenticate = () => {
                 maxWidth="xs" 
                 elevation={5}>
                 {loginView ? 
-                <Login classes={classes} handleLoginView={handleLoginView} handleLoginSubmit={handleLoginSubmit} /> 
-                : <SignUp classes={classes} handleLoginView={handleLoginView} handleSignupSubmit={handleSignupSubmit} />}
+                <Login classes={classes} handleLoginView={handleLoginView} handleLoginSubmit={handleLoginSubmit} authLogo={authLogo} /> 
+                : <SignUp classes={classes} handleLoginView={handleLoginView} handleSignupSubmit={handleSignupSubmit} authLogo={authLogo} />}
             </Paper>
         </Container>
     )

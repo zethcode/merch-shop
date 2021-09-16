@@ -65,4 +65,8 @@ export default makeStyles((theme) => ({
       width: '20ch',
     },
   },
+  logo: {
+    width: "135px",
+    height: "50px"
+  }
 }));

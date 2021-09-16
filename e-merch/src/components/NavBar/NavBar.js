@@ -4,6 +4,7 @@ import { ShoppingCart } from '@material-ui/icons';
 import useStyles from './styles';
 import { getAuth, signOut } from '@firebase/auth';
 import { useAuthState } from '../../firebase';
+import logo from './../../assets/logo-white-on-transparent.png';
 
 const NavBar = ({ cartTotal }) => {
   const classes = useStyles()
@@ -18,13 +19,14 @@ const NavBar = ({ cartTotal }) => {
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
-      <Toolbar>
+      <Toolbar disableGutters>
         {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
           <MenuIcon />
         </IconButton> */}
-        <Typography variant="h6" className={classes.title} component={Link} to='/' style={{color: 'white'}}>
-          Zeth Garments
-        </Typography>
+        <Button component={Link} to="/">
+          <img className={classes.logo} alt="tabp-logo" src={logo} />
+        </Button>
+
         <div className={classes.grow} />
         <div className={classes.button}>
             <IconButton aria-label="Show cart items" color="inherit" component={Link} to='/cart'>

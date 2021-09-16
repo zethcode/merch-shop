@@ -8,7 +8,7 @@ export default makeStyles((theme) => ({
     content: {
         flexGrow: 1,
         backgroundColor: theme.palette.background.default,
-        paddingTop: "10%",
+        paddingTop: "5%",
     },
     paper: {
         height: "34em",
@@ -29,5 +29,9 @@ export default makeStyles((theme) => ({
         marginBottom: theme.spacing(1),
         borderRadius: "1.5em",
         width: "13em"
+    },
+    authLogo: {
+        width: "55%",
+        height: "55%"
     }
 }));

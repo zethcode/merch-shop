@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FormControl, Grid, TextField, FormGroup, Button, InputLabel, Input, InputAdornment, IconButton, Typography, Link } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 
-const SignUp = ({ classes, handleLoginView, handleSignupSubmit }) => {
+const SignUp = ({ classes, handleLoginView, handleSignupSubmit, authLogo }) => {
     const [values, setValues] = useState({
       password: '',
       confirmPassword: '',
@@ -25,7 +25,10 @@ const SignUp = ({ classes, handleLoginView, handleSignupSubmit }) => {
     return (
         <FormGroup onSubmit={handleSignupSubmit}>
             <Grid className={classes.container} container direction="column" justifyContent="space-around" spacing={2}>
-                <Typography variant="h4">Create an account</Typography>
+                <Grid item align="center">
+                    <img className={classes.authLogo} alt="tabp-logo" src={authLogo} />
+                    <Typography variant="h4">Create an account</Typography>
+                </Grid>
 
                 <Grid container direction="row" spacing={2}>
                     <Grid item xs={6} sm={6}>
