@@ -1,35 +1,12 @@
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { makeStyles, ThemeProvider, createTheme } from '@material-ui/core';
-import { NavBar, Main, Footer, NotFound, Cart } from './components';
+import { NavBar, Main, Footer, NotFound, Cart, Loading } from './components';
 import { useState, useEffect } from 'react';
 import { query, where, collection, doc, setDoc, getDoc, getDocs, addDoc, updateDoc, deleteDoc } from 'firebase/firestore/lite';
 import db, { AuthContextProvider, useAuthState } from "./firebase";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Authenticate from './components/pages/Authentication/Authenticate';
-
-// Authentication
-const AuthenticatedRoute = ({ component: C, ...props }) => {
-  const { isAuthenticated } = useAuthState()
-  return (
-    <Route 
-      {...props}
-      render={routeProps =>
-        isAuthenticated ? <C {...routeProps} /> : <Redirect to="/authenticate" />}
-    />
-  )
-}
-
-const UnauthenticatedRoute = ({ component: C, ...props }) => {
-  const { isAuthenticated } = useAuthState()
-  return (
-    <Route
-      {...props}
-      render={routeProps =>
-        !isAuthenticated ? <C {...routeProps} /> : <Redirect to="/" />
-      }
-    />
-  )
-}
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +18,8 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1
-  }
+  },
+  toolbar: theme.mixins.toolbar,
 }));
 
 const theme = createTheme({
@@ -73,10 +51,55 @@ function App() {
   const [cart, setCart] = useState([])
   const [productsLoading, setProductsLoading] = useState(true)
   const [cartLoading, setCartLoading] = useState(true)
-
-  // Snackbar constants
   const [alertProps, setAlertProps] = useState({})
   const [cartAlertProps, setCartAlertProps] = useState({})
+  const [userInfo, setUserInfo] = useState({isLoggedIn: false})
+  const [state, setState] = useState("loading");
+  // const { isAuthenticated } = useAuthState()
+  const auth = getAuth()
+
+  onAuthStateChanged(auth, (user) => {
+    setState(Boolean(user) ? "loggedin" : "redirect")
+    setUserInfo(user)
+  });
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const isUserLogged = await getAuth().currentUser;
+        setState(Boolean(isUserLogged) ? 'loggedin' : 'loading');
+      }
+      catch (e) {
+        setState('redirect');
+      }
+    })()
+    getProducts()
+    getCart()
+    
+    setUserInfo(userInfo)
+  }, [userInfo])
+
+  // Authentication
+  const AuthenticatedRoute = ({ component: C, ...props }) => {
+    return (
+      <Route 
+        {...props}
+        render={routeProps =>
+          (state === 'loggedin') ? <C {...routeProps} /> : ((state !== 'loading') && <Redirect to="/authenticate" /> )}
+      />
+    )
+  }
+
+  const UnauthenticatedRoute = ({ component: C, ...props }) => {
+    return (
+      <Route
+        {...props}
+        render={routeProps =>
+          !(state === 'loggedin') ? <C {...routeProps} /> : ((state !== 'loading') && <Redirect to="/" /> )
+        }
+      />
+    )
+  }
 
   // Snackbar Alert handlers
   const handleClose = () => {
@@ -213,25 +236,24 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    getProducts()
-    getCart()
-  }, [])
-
   return (
     <div className={classes.root}>
       <AuthContextProvider>
         <Router>
-          <ThemeProvider theme={theme}>
-            <NavBar cartTotal={cart.length} />
-            <Switch>
-              <UnauthenticatedRoute exact path="/authenticate" component={Authenticate} />
-              <UnauthenticatedRoute exact path="/" component={() => <Main products={products} addToCart={addToCart} loading={productsLoading} alertProps={alertProps} handleClose={handleClose} />} />
-              <AuthenticatedRoute exact path="/cart" component={() => <Cart /* userInfo={userInfo} */ cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} emptyCart={emptyCart} loading={cartLoading} alertProps={cartAlertProps} handleSnackbarClose={handleClose} />} />
-              <Route component={NotFound}/>
-            </Switch>
-          </ThemeProvider>
-          <Footer />
+          {state === "loading" ? <> <div className={classes.toolbar} /> <Loading component="the page" /> </> :
+            <>
+            <ThemeProvider theme={theme}>
+              <NavBar cartTotal={cart.length} userInfo={userInfo} />
+                <Switch>
+                <UnauthenticatedRoute exact path="/authenticate" userInfo={userInfo} component={Authenticate} />
+                <Route exact path="/" component={() => <Main products={products} addToCart={addToCart} loading={productsLoading} alertProps={alertProps} handleClose={handleClose} />} />
+                <AuthenticatedRoute exact path="/cart" component={() => <Cart /* userInfo={userInfo} */ cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} emptyCart={emptyCart} loading={cartLoading} alertProps={cartAlertProps} handleSnackbarClose={handleClose} />} />
+                <Route component={NotFound}/>
+              </Switch>
+            </ThemeProvider>
+            <Footer />
+            </>
+          }
         </Router>
       </AuthContextProvider>
     </div>

@@ -1,33 +1,38 @@
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { AppBar, Typography, Button, IconButton, Badge, Toolbar } from '@material-ui/core';
 import { ShoppingCart } from '@material-ui/icons';
 import useStyles from './styles';
 import { getAuth, signOut } from '@firebase/auth';
-import { useAuthState } from '../../firebase';
+// import { useAuthState } from '../../firebase';
 import logo from './../../assets/logo-white-on-transparent.png';
 
-const NavBar = ({ cartTotal }) => {
+const NavBar = ({ cartTotal, userInfo }) => {
   const classes = useStyles()
+  const history = useHistory()
+  const location = useLocation()
 
-  // const { user } = useAuthState()
+  // console.log("user info daw", userInfo)
 
-  // console.log('user data here', user)
-
-  /*
-  <button onClic={() => signOut(getAuth())}>Sign Out</button>
-  */
+  const handleSignOut = () => {
+    try {
+      signOut(getAuth())
+      history.push("/")
+    } catch (e) {
+      alert(e.message)
+    }
+  }
 
   return (
+    location.pathname !== "/authenticate" &&
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar disableGutters>
-        {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-          <MenuIcon />
-        </IconButton> */}
         <Button component={Link} to="/">
           <img className={classes.logo} alt="tabp-logo" src={logo} />
         </Button>
 
         <div className={classes.grow} />
+        {userInfo ?
+        <>
         <div className={classes.button}>
             <IconButton aria-label="Show cart items" color="inherit" component={Link} to='/cart'>
               <Badge badgeContent={cartTotal} color="secondary">
@@ -35,9 +40,14 @@ const NavBar = ({ cartTotal }) => {
               </Badge>
             </IconButton>
         </div>
-        <Button color="inherit" component={Link} to='/cart'>
-          Login
+        <Button className={classes.authButton} color="inherit" onClick={handleSignOut}>
+          Logout
         </Button>
+        </>
+        :
+        <Button className={classes.authButton} color="inherit" component={Link} to='/authenticate'>
+          Login
+        </Button>}
       </Toolbar>
     </AppBar>
   )

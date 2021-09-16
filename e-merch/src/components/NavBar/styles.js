@@ -68,5 +68,8 @@ export default makeStyles((theme) => ({
   logo: {
     width: "135px",
     height: "50px"
+  },
+  authButton: {
+      marginRight: "0.7rem"
   }
 }));

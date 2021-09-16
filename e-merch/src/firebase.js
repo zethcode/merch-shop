@@ -32,7 +32,28 @@ export const AuthContextProvider = props => {
   return <AuthContext.Provider value={{ user, error}} {...props} />
 }
 
-export const useAuthState = () => {
-  const auth = useContext(AuthContext)
+export const useAuthState = async () => {
+  const auth = await useContext(AuthContext)
   return { ...auth, isAuthenticated: auth.user != null}
+}
+
+export const getUserInfo = () => {
+  // Get current authenticated user if user has logged in
+  const auth = getAuth();
+  let data = {}
+
+  onAuthStateChanged(auth, (user) => {
+    console.log("user sud", user)
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      console.log("naa man user", user)
+      data = ({ id: user.uid, email: user.email, isLoggedIn: true })
+    } else {
+      // User is signed out
+      console.log("not logged in gud", { isLoggedIn: false })
+      data = { isLoggedIn: false }
+    }
+    console.log('user data', data)
+  });
 }

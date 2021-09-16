@@ -1,20 +1,14 @@
-import { useState } from 'react';
-import { FormControl, Grid, TextField, FormGroup, Button, InputLabel, Input, InputAdornment, IconButton, Typography, Link } from '@material-ui/core';
+import { useState, useRef } from 'react';
+import { FormControl, Grid, TextField, Button, InputLabel, Input, InputAdornment, IconButton, Typography, Link, FormHelperText } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
+import { useForm } from 'react-hook-form';
 
-const Login = ({ classes, handleLoginView, handleLoginSubmit, authLogo }) => {
-    const [values, setValues] = useState({
-        password: '',
-        showPassword: false,
-      });
-      
-      // Password visibility handlers
-    const handleChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
-    };
+const Login = ({ classes, handleLoginView, handleLoginSubmit, authLogo, history, loginFailed }) => {
+    const { register, handleSubmit, formState: { errors }, watch } = useForm({});
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => {
-        setValues({ ...values, showPassword: !values.showPassword });
+        setShowPassword(!showPassword);
     };
 
     const handleMouseDownPassword = (event) => {
@@ -22,7 +16,8 @@ const Login = ({ classes, handleLoginView, handleLoginSubmit, authLogo }) => {
     };
 
     return (
-        <FormGroup onSubmit={handleLoginSubmit}>
+        <>
+        <form onSubmit={handleSubmit(handleLoginSubmit)}>
             <Grid className={classes.container} container direction="column" justifyContent="space-around" spacing={2}>
                 
                 <Grid item align="center">
@@ -31,27 +26,38 @@ const Login = ({ classes, handleLoginView, handleLoginSubmit, authLogo }) => {
                     <Typography variant="caption" align="center">Sign in with your account to start shopping!</Typography>
                 </Grid>
                 
+                {loginFailed && 
+                    <FormHelperText error>
+                        Login failed. Your email/password is incorrect.
+                    </FormHelperText>
+                }
+                
+                <TextField 
+                    className={classes.formControl}
+                    required
+                    id="login-email" 
+                    type="email"
+                    name="email"
+                    label="Email Address"
+                    placeholder="example@email.com"
+                    InputLabelProps={{ required: false }}
+                    {...register("email", {
+                        pattern: {
+                            value: /.+@.+\.[A-Za-z]{2,4}$/,
+                            message: "This is an invalid email address"
+                        }
+                    })}
+                    error={Boolean(errors.email)}
+                    helperText={errors.email?.message}
+                />
 
                 <FormControl className={classes.formControl}>
-                    <TextField 
-                        required
-                        id="login-email" 
-                        label="Email Address"
-                        placeholder="example@email.com"
-                        type="email"
-                        color="primary"
-                        InputLabelProps={{ required: false }}
-                    />
-                </FormControl>
-
-                <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="input-password">Password</InputLabel>
+                    <InputLabel htmlFor="login-password">Password</InputLabel>
                     <Input
                         id="login-password"
                         required
-                        type={values.showPassword ? 'text' : 'password'}
-                        value={values.password}
-                        onChange={handleChange('password')}
+                        type={showPassword ? 'text' : 'password'}
+                        {...register("password")}
                         endAdornment={
                         <InputAdornment position="end">
                             <IconButton
@@ -59,7 +65,7 @@ const Login = ({ classes, handleLoginView, handleLoginSubmit, authLogo }) => {
                             onClick={handleClickShowPassword}
                             onMouseDown={handleMouseDownPassword}
                             >
-                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
                             </IconButton>
                         </InputAdornment>
                         }
@@ -69,15 +75,18 @@ const Login = ({ classes, handleLoginView, handleLoginSubmit, authLogo }) => {
                 <Link component="button" align="right" variant="subtitle2" onClick={() => console.log("Insert forgot passwod functionality here.")}>Forgot password?</Link>
 
                 <Grid item align="center">
-                    <Button className={classes.submitButton} variant="contained" color="primary" disableElevation>Sign In</Button>
+                    <Button className={classes.submitButton} variant="contained" color="primary" type="submit" disableElevation>Sign In</Button>
                 </Grid>
 
                 <Typography variant="subtitle2" align="center">
                     Dont't have an account?
                 <Link component="button" variant="subtitle2" onClick={() => handleLoginView(false)}>&nbsp;Sign Up</Link>
                 </Typography>
+                <br />
+                <Link component="button" variant="subtitle2" to="/" onClick={() => history.push("/")}>Back to Home</Link>
             </Grid>
-        </FormGroup>
+        </form>
+        </>
     )
 }
 
