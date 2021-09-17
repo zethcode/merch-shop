@@ -1,6 +1,6 @@
 import { Typography, CircularProgress, Grid } from '@material-ui/core';
 
-const Loading = ({ component }) => {
+const Loading = ({ message }) => {
     
     return (
         <Grid 
@@ -11,7 +11,7 @@ const Loading = ({ component }) => {
             style={{ minHeight: '25vh' }}>
           <CircularProgress />
           <br />
-          <Typography variant="h5" gutterBottom>Loading {component}...</Typography>
+          <Typography variant="h5" gutterBottom>{message}</Typography>
         </Grid>
     )
 }

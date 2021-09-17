@@ -1,12 +1,13 @@
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { makeStyles, ThemeProvider, createTheme } from '@material-ui/core';
-import { NavBar, Main, Footer, NotFound, Cart, Loading } from './components';
+import { NavBar, Main, NotFound, Cart, Loading } from './components';
 import { useState, useEffect } from 'react';
-import { query, where, collection, doc, setDoc, getDoc, getDocs, addDoc, updateDoc, deleteDoc } from 'firebase/firestore/lite';
-import db, { AuthContextProvider, useAuthState } from "./firebase";
+import { query, where, collection, doc, setDoc, getDoc, getDocs, updateDoc, deleteDoc } from 'firebase/firestore/lite';
+import db, { AuthContextProvider } from "./firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import Authenticate from './components/pages/Authentication/Authenticate';
+import Signin from './components/pages/Authentication/Signin';
+import Signup from './components/pages/Authentication/Signup';
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -55,7 +56,6 @@ function App() {
   const [cartAlertProps, setCartAlertProps] = useState({})
   const [userInfo, setUserInfo] = useState({isLoggedIn: false})
   const [state, setState] = useState("loading");
-  // const { isAuthenticated } = useAuthState()
   const auth = getAuth()
 
   onAuthStateChanged(auth, (user) => {
@@ -67,10 +67,10 @@ function App() {
     (async () => {
       try {
         const isUserLogged = await getAuth().currentUser;
-        setState(Boolean(isUserLogged) ? 'loggedin' : 'loading');
+        setState(Boolean(isUserLogged) ? "loggedin" : "loading");
       }
       catch (e) {
-        setState('redirect');
+        setState("redirect");
       }
     })()
     getProducts()
@@ -85,7 +85,7 @@ function App() {
       <Route 
         {...props}
         render={routeProps =>
-          (state === 'loggedin') ? <C {...routeProps} /> : ((state !== 'loading') && <Redirect to="/authenticate" /> )}
+          (state === "loggedin") ? <C {...routeProps} /> : ((state !== "loading") && <Redirect to="/authenticate" /> )}
       />
     )
   }
@@ -95,7 +95,7 @@ function App() {
       <Route
         {...props}
         render={routeProps =>
-          !(state === 'loggedin') ? <C {...routeProps} /> : ((state !== 'loading') && <Redirect to="/" /> )
+          !(state === "loggedin") ? <C {...routeProps} /> : ((state !== "loading") && <Redirect to="/" /> )
         }
       />
     )
@@ -109,7 +109,7 @@ function App() {
 
   // Products
   const getProducts = async () => {
-    const productsCol = collection(db, 'products')
+    const productsCol = collection(db, "products")
     const productsSnapshot = await getDocs(productsCol)
     
     if (!productsSnapshot.empty) {
@@ -148,7 +148,8 @@ function App() {
   }
   
   // Add product to cart by user id
-  const addToCart = async (userId, product) => {
+  const addToCart = async (product) => {
+    let userId = "user-arckie"
     const cartRef = collection(db, "cart")
     const cartQuery = await query(cartRef, where("userID", "==", userId), where("productID", "==", product.id))
     const cartSnap = await getDocs(cartQuery);
@@ -240,18 +241,18 @@ function App() {
     <div className={classes.root}>
       <AuthContextProvider>
         <Router>
-          {state === "loading" ? <> <div className={classes.toolbar} /> <Loading component="the page" /> </> :
+          {state === "loading" ? <> <div className={classes.toolbar} /> <Loading message="Getting things ready..." /> </> :
             <>
             <ThemeProvider theme={theme}>
               <NavBar cartTotal={cart.length} userInfo={userInfo} />
                 <Switch>
-                <UnauthenticatedRoute exact path="/authenticate" userInfo={userInfo} component={Authenticate} />
-                <Route exact path="/" component={() => <Main products={products} addToCart={addToCart} loading={productsLoading} alertProps={alertProps} handleClose={handleClose} />} />
-                <AuthenticatedRoute exact path="/cart" component={() => <Cart /* userInfo={userInfo} */ cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} emptyCart={emptyCart} loading={cartLoading} alertProps={cartAlertProps} handleSnackbarClose={handleClose} />} />
+                <UnauthenticatedRoute exact path="/signup" userInfo={userInfo} component={Signup} />
+                <UnauthenticatedRoute exact path="/signin" userInfo={userInfo} component={Signin} />
+                <Route exact path="/" component={() => <Main state={state} products={products} addToCart={addToCart} loading={productsLoading} alertProps={alertProps} handleClose={handleClose} />} />
+                <AuthenticatedRoute exact path="/cart" component={() => <Cart userInfo={userInfo} cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} emptyCart={emptyCart} loading={cartLoading} alertProps={cartAlertProps} handleSnackbarClose={handleClose} />} />
                 <Route component={NotFound}/>
               </Switch>
             </ThemeProvider>
-            <Footer />
             </>
           }
         </Router>

@@ -1,19 +1,29 @@
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { AppBar, Typography, Button, IconButton, Badge, Toolbar } from '@material-ui/core';
+import { AppBar, Button, IconButton, Badge, Toolbar } from '@material-ui/core';
 import { ShoppingCart } from '@material-ui/icons';
 import useStyles from './styles';
 import { getAuth, signOut } from '@firebase/auth';
-// import { useAuthState } from '../../firebase';
+import { useEffect, useState } from 'react';
 import logo from './../../assets/logo-white-on-transparent.png';
+import LoadingBackdrop from '../LoadingBackdrop';
 
 const NavBar = ({ cartTotal, userInfo }) => {
   const classes = useStyles()
   const history = useHistory()
   const location = useLocation()
+  const [openBackdrop, setOpenBackdrop] = useState(false)
 
-  // console.log("user info daw", userInfo)
+  // Backdrop handlers
+  const handleBackdropClose = () => {
+    setOpenBackdrop(false)
+  };
+  
+  const handleBackdropOpen = () => {
+      setOpenBackdrop(true)
+  };
 
   const handleSignOut = () => {
+    handleBackdropOpen()
     try {
       signOut(getAuth())
       history.push("/")
@@ -21,9 +31,13 @@ const NavBar = ({ cartTotal, userInfo }) => {
       alert(e.message)
     }
   }
+  
+  useEffect(() => {
+    handleBackdropClose()
+  }, [])
 
   return (
-    location.pathname !== "/authenticate" &&
+    location.pathname !== "/signin" && location.pathname !== "/signup" &&
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar disableGutters>
         <Button component={Link} to="/">
@@ -45,9 +59,13 @@ const NavBar = ({ cartTotal, userInfo }) => {
         </Button>
         </>
         :
-        <Button className={classes.authButton} color="inherit" component={Link} to='/authenticate'>
-          Login
-        </Button>}
+        <> <Button color="inherit" component={Link} to='/signin'>
+          SIGN IN
+        </Button>
+        <Button className={classes.authButton} color="inherit" component={Link} to='/signup'>
+          REGISTER
+        </Button> </>}
+        <LoadingBackdrop blackdropCLass={classes.backdrop} openBackdrop={openBackdrop} />
       </Toolbar>
     </AppBar>
   )

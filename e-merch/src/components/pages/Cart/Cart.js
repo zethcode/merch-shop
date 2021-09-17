@@ -107,7 +107,7 @@ const Cart = ({ userId, cart, updateCart, removeFromCart, emptyCart, loading, al
         <Container>
             <div className={classes.toolbar} />
             <Typography className={classes.title} variant="h4" gutterBottom>Shopping Cart</Typography>
-            { loading ? <Loading component="Cart" /> : (!cart.length ? <EmptyCart /> : <FilledCart />) }
+            { loading ? <Loading message="Loading Cart..." /> : (!cart.length ? <EmptyCart /> : <FilledCart />) }
             
                 {alertProps.delete ? 
                     <SnackbarAlert alertProps={alertProps} handleClose={handleSnackbarClose} severity="success" variant="filled" message="Emptied the cart successfully!" />

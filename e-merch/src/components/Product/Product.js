@@ -4,12 +4,13 @@ import useStyles from './styles';
 import SnackbarAlert from '../SnackbarAlert';
 import LoadingBackdrop from '../LoadingBackdrop';
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
-const Product = ({ userId, product, addToCart, alertProps, handleClose }) => {
-    userId = 'user-arckie'
+const Product = ({ state, product, addToCart, alertProps, handleClose }) => {
     const classes = useStyles()
+    const history = useHistory()
     const [initialLoad, setInitialLoad] = useState(true)
-    const [openBackdrop, setOpenBackdrop] = useState(false);
+    const [openBackdrop, setOpenBackdrop] = useState(false)
 
     useEffect(() => {
         if (!initialLoad) {
@@ -45,7 +46,7 @@ const Product = ({ userId, product, addToCart, alertProps, handleClose }) => {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing className={classes.cardActions}>
-                <IconButton aria-label="Add To Cart" onClick={() => { handleBackdropOpen(); addToCart(userId, product); }} >
+                <IconButton aria-label="Add To Cart" onClick={() => { handleBackdropOpen(); (state === "loggedin" ? addToCart(product) : history.push("/authenticate")) }} >
                     <AddShoppingCart />
                 </IconButton>
                 {alertProps.addStatus ?

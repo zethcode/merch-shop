@@ -35,5 +35,9 @@ export default makeStyles((theme) => ({
         width: "55%",
         height: "55%",
         marginBottom: "1rem"
+    },
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 1,
+      color: '#fff',
     }
 }));
