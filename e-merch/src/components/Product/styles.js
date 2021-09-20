@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
     root: {
         maxWidth: '100%'
     },
@@ -15,5 +15,9 @@ export default makeStyles(() => ({
     cardContent: {
       display: 'flex',
       justifyContent: 'space-between',
+    },
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 1,
+      color: '#fff',
     }
 }));

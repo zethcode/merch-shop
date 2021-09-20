@@ -65,4 +65,15 @@ export default makeStyles((theme) => ({
       width: '20ch',
     },
   },
+  logo: {
+    width: "135px",
+    height: "50px"
+  },
+  authButton: {
+      marginRight: "0.7rem"
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  }
 }));

@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
   media: {
     height: 260,
   },
@@ -15,4 +15,8 @@ export default makeStyles(() => ({
     display: 'flex',
     alignItems: 'center',
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  }
 }));
