@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/tabp-clothing/static/css/main.bb399dca.chunk.css",
-    "main.js": "/tabp-clothing/static/js/main.e1dd2a13.chunk.js",
-    "main.js.map": "/tabp-clothing/static/js/main.e1dd2a13.chunk.js.map",
+    "main.js": "/tabp-clothing/static/js/main.80763488.chunk.js",
+    "main.js.map": "/tabp-clothing/static/js/main.80763488.chunk.js.map",
     "runtime-main.js": "/tabp-clothing/static/js/runtime-main.652e8b7d.js",
     "runtime-main.js.map": "/tabp-clothing/static/js/runtime-main.652e8b7d.js.map",
-    "static/js/2.95878808.chunk.js": "/tabp-clothing/static/js/2.95878808.chunk.js",
-    "static/js/2.95878808.chunk.js.map": "/tabp-clothing/static/js/2.95878808.chunk.js.map",
+    "static/js/2.0ec1c6b7.chunk.js": "/tabp-clothing/static/js/2.0ec1c6b7.chunk.js",
+    "static/js/2.0ec1c6b7.chunk.js.map": "/tabp-clothing/static/js/2.0ec1c6b7.chunk.js.map",
     "static/js/3.fceb3fc7.chunk.js": "/tabp-clothing/static/js/3.fceb3fc7.chunk.js",
     "static/js/3.fceb3fc7.chunk.js.map": "/tabp-clothing/static/js/3.fceb3fc7.chunk.js.map",
     "index.html": "/tabp-clothing/index.html",
     "static/css/main.bb399dca.chunk.css.map": "/tabp-clothing/static/css/main.bb399dca.chunk.css.map",
-    "static/js/2.95878808.chunk.js.LICENSE.txt": "/tabp-clothing/static/js/2.95878808.chunk.js.LICENSE.txt",
+    "static/js/2.0ec1c6b7.chunk.js.LICENSE.txt": "/tabp-clothing/static/js/2.0ec1c6b7.chunk.js.LICENSE.txt",
     "static/media/group-mountain-1.808178a4.jpg": "/tabp-clothing/static/media/group-mountain-1.808178a4.jpg",
     "static/media/logo-white-on-transparent.f80f3dc7.png": "/tabp-clothing/static/media/logo-white-on-transparent.f80f3dc7.png",
     "static/media/tabp-black-on-transparent.6cd6e039.png": "/tabp-clothing/static/media/tabp-black-on-transparent.6cd6e039.png"
   },
   "entrypoints": [
     "static/js/runtime-main.652e8b7d.js",
-    "static/js/2.95878808.chunk.js",
+    "static/js/2.0ec1c6b7.chunk.js",
     "static/css/main.bb399dca.chunk.css",
-    "static/js/main.e1dd2a13.chunk.js"
+    "static/js/main.80763488.chunk.js"
   ]
 }
