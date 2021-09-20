@@ -8,15 +8,15 @@ import useStyles from './styles';
 import authLogo from './../../../assets/tabp-black-on-transparent.png';
 import LoadingBackdrop from '../../LoadingBackdrop';
 
-const Signin = () => {
+const Signin = ({ prevPath }) => {
     const classes = useStyles()
     const history = useHistory()
     const [signinFailed, setSigninFailed] = useState(false)
-    const { register, handleSubmit, formState: { errors }, watch } = useForm({});
-    const [showPassword, setShowPassword] = useState(false);
+    const { register, handleSubmit, formState: { errors } } = useForm({}) 
+    const [showPassword, setShowPassword] = useState(false)
     const [openBackdrop, setOpenBackdrop] = useState(false)
 
-
+    console.log("ang path", prevPath)
 
     // Show password handlers
     const handleClickShowPassword = () => {
@@ -42,6 +42,14 @@ const Signin = () => {
         const auth = getAuth()
         try {
             await signInWithEmailAndPassword(auth, values.email, values.password)
+                .then((userCredentials) => {
+                    // const location = useLocation();
+                    // const { redirectTo } = queryString.parse(location.search);
+                    // history.push(redirectTo == null ? "/apps" : redirectTo);
+                })
+                .catch((error) => {
+                    console.log("Error encountered signing in!")
+                })
         } catch (e) {
             // Add better message handling here for UX
             setSigninFailed(true)
@@ -127,7 +135,7 @@ const Signin = () => {
                         <Link component="button" variant="subtitle2" to="/" onClick={() => history.push("/")}>Back to Home</Link>
                     </Grid>
                 </form>
-                <LoadingBackdrop blackdropCLass={classes.backdrop} openBackdrop={openBackdrop} />
+                <LoadingBackdrop className={classes.backdrop} open={openBackdrop} />
             </Paper>
         </Container>
     )

@@ -3,7 +3,7 @@ import { AddShoppingCart } from '@material-ui/icons';
 import useStyles from './styles';
 import SnackbarAlert from '../SnackbarAlert';
 import LoadingBackdrop from '../LoadingBackdrop';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createRef, forwardRef, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
 const Product = ({ state, product, addToCart, alertProps, handleClose }) => {
@@ -11,6 +11,7 @@ const Product = ({ state, product, addToCart, alertProps, handleClose }) => {
     const history = useHistory()
     const [initialLoad, setInitialLoad] = useState(true)
     const [openBackdrop, setOpenBackdrop] = useState(false)
+    const backdropRef = useRef(null)
 
     useEffect(() => {
         if (!initialLoad) {
@@ -29,6 +30,8 @@ const Product = ({ state, product, addToCart, alertProps, handleClose }) => {
         setOpenBackdrop(true)
     }
 
+    // TODO: ADD A CIRCULAR LOADING ON CART NUMBER AND ADD TO CART BUTTONS IF THE CART HASN'T LOADED YET
+
     return (
         <Card className={classes.root}>
             <CardMedia className={classes.media} image={product.image} title={product.name} />
@@ -46,7 +49,7 @@ const Product = ({ state, product, addToCart, alertProps, handleClose }) => {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing className={classes.cardActions}>
-                <IconButton aria-label="Add To Cart" onClick={() => { handleBackdropOpen(); (state === "loggedin" ? addToCart(product) : history.push("/authenticate")) }} >
+                <IconButton aria-label="Add To Cart" onClick={() => { handleBackdropOpen(); (state === "loggedin" ? addToCart(product) : history.push("/signin")) }} >
                     <AddShoppingCart />
                 </IconButton>
                 {alertProps.addStatus ?
@@ -54,7 +57,7 @@ const Product = ({ state, product, addToCart, alertProps, handleClose }) => {
                     :
                     <SnackbarAlert alertProps={alertProps} handleClose={handleClose} severity="error" variant="filled" message="The item is already in your cart!" />
                 }
-                <LoadingBackdrop blackdropCLass={classes.backdrop} openBackdrop={openBackdrop} />
+                <LoadingBackdrop className={classes.backdrop} open={openBackdrop} />
             </CardActions>
         </Card>
     )

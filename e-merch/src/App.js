@@ -2,7 +2,7 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { makeStyles, ThemeProvider, createTheme } from '@material-ui/core';
 import { NavBar, Main, NotFound, Cart, Loading } from './components';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createRef, useRef } from 'react';
 import { query, where, collection, doc, setDoc, getDoc, getDocs, updateDoc, deleteDoc } from 'firebase/firestore/lite';
 import db, { AuthContextProvider } from "./firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -56,28 +56,13 @@ function App() {
   const [cartAlertProps, setCartAlertProps] = useState({})
   const [userInfo, setUserInfo] = useState({isLoggedIn: false})
   const [state, setState] = useState("loading");
+  const loadingRef = useRef()
   const auth = getAuth()
 
   onAuthStateChanged(auth, (user) => {
     setState(Boolean(user) ? "loggedin" : "redirect")
     setUserInfo(user)
   });
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const isUserLogged = await getAuth().currentUser;
-        setState(Boolean(isUserLogged) ? "loggedin" : "loading");
-      }
-      catch (e) {
-        setState("redirect");
-      }
-    })()
-    getProducts()
-    getCart()
-    
-    setUserInfo(userInfo)
-  }, [userInfo])
 
   // Authentication
   const AuthenticatedRoute = ({ component: C, ...props }) => {
@@ -124,8 +109,8 @@ function App() {
 
   // Cart handlers
   // Fetch cart collection by user id
-  const getCart = async (userId) => {
-    userId = "user-arckie"
+  const getCart = async () => {
+    let userId = userInfo != null ? userInfo.uid != null && userInfo.uid : ""
     const cartQuery = await query(collection(db, "cart"), where("userID", "==", userId))
     const docSnap = await getDocs(cartQuery)
     const items = []
@@ -149,18 +134,18 @@ function App() {
   
   // Add product to cart by user id
   const addToCart = async (product) => {
-    let userId = "user-arckie"
     const cartRef = collection(db, "cart")
-    const cartQuery = await query(cartRef, where("userID", "==", userId), where("productID", "==", product.id))
+    const cartQuery = await query(cartRef, where("userID", "==", userInfo.uid), where("productID", "==", product.id))
     const cartSnap = await getDocs(cartQuery);
         
     if (cartSnap.empty) {
       const addCartRef = doc(cartRef)
-      const data = { productID: product.id, userID: userId, quantity: 1 }
+      const data = { productID: product.id, userID: userInfo.uid, quantity: 1 }
       
       await setDoc(addCartRef, data)
       const cartData = { ...data, product: product, id: addCartRef.id }
-      setCart([...cart, cartData])
+      let cartLength = cart.length
+      setCart(cartLength === 0 ? cartData : (!Array.isArray(cart) ? [cart, cartData] : [...cart, cartData]))
       setAlertProps({
         open: true,
         addStatus: true
@@ -207,9 +192,9 @@ function App() {
   }
   
   // Enable authentication here, maybe it's time to jump to firebase from here. Before implementing this empty cart function
-  const emptyCart = async (userId) => {
+  const emptyCart = async () => {
     const cartRef = collection(db, "cart")
-    const cartQuery = await query(cartRef, where("userID", "==", userId))
+    const cartQuery = await query(cartRef, where("userID", "==", userInfo.uid))
     const cartSnap = await getDocs(cartQuery)
 
     if (!cartSnap.empty) {
@@ -237,6 +222,22 @@ function App() {
     }
   }
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const isUserLogged = await getAuth().currentUser;
+        setState(Boolean(isUserLogged) ? "loggedin" : "loading");
+      }
+      catch (e) {
+        setState("redirect");
+      }
+    })()
+    setUserInfo(userInfo)
+
+    getProducts()
+    getCart()
+  }, [userInfo])
+
   return (
     <div className={classes.root}>
       <AuthContextProvider>
@@ -244,12 +245,12 @@ function App() {
           {state === "loading" ? <> <div className={classes.toolbar} /> <Loading message="Getting things ready..." /> </> :
             <>
             <ThemeProvider theme={theme}>
-              <NavBar cartTotal={cart.length} userInfo={userInfo} />
+              <NavBar loadingRef={loadingRef} cartTotal={Array.isArray(cart) ? cart.length : Object.keys(cart).length !== 0 ? 1 : 0} userInfo={userInfo} />
                 <Switch>
-                <UnauthenticatedRoute exact path="/signup" userInfo={userInfo} component={Signup} />
-                <UnauthenticatedRoute exact path="/signin" userInfo={userInfo} component={Signin} />
-                <Route exact path="/" component={() => <Main state={state} products={products} addToCart={addToCart} loading={productsLoading} alertProps={alertProps} handleClose={handleClose} />} />
-                <AuthenticatedRoute exact path="/cart" component={() => <Cart userInfo={userInfo} cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} emptyCart={emptyCart} loading={cartLoading} alertProps={cartAlertProps} handleSnackbarClose={handleClose} />} />
+                <UnauthenticatedRoute exact path="/signup" loadingRef={loadingRef} userInfo={userInfo} component={Signup} />
+                <UnauthenticatedRoute exact path="/signin" loadingRef={loadingRef} userInfo={userInfo} component={Signin} />
+                <Route exact path="/" component={() => <Main loadingRef={loadingRef} state={state} products={products} addToCart={addToCart} loading={productsLoading} alertProps={alertProps} handleClose={handleClose} />} />
+                <AuthenticatedRoute exact path="/cart" component={() => <Cart loadingRef={loadingRef} userInfo={userInfo} cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} emptyCart={emptyCart} loading={cartLoading} alertProps={cartAlertProps} handleSnackbarClose={handleClose} />} />
                 <Route component={NotFound}/>
               </Switch>
             </ThemeProvider>

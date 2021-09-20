@@ -1,7 +1,7 @@
 import { FormControl, Grid, TextField, Button, InputAdornment, IconButton, Typography, Link, FormHelperText, Container, Paper } from '@material-ui/core';
-import { useEffect, useState, useRef, useCallback } from 'react';
-import { getAuth, createUserWithEmailAndPassword } from '@firebase/auth';
-import { collection, doc } from 'firebase/firestore/lite';
+import { useState, useRef, useCallback } from 'react';
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from '@firebase/auth';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore/lite';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -15,10 +15,15 @@ const Signup = () => {
     const history = useHistory()
     const { register, handleSubmit, formState: { errors }, watch } = useForm({})
     const [showPassword, setShowPassword] = useState(false)
-    const [signupFailed, setSignupFailed] = useState(false)
     const [openBackdrop, setOpenBackdrop] = useState(false)
+    const errorCode = useRef({})
     const password = useRef({})
     password.current = watch("password", "")
+
+    /* TODO:
+        1. Add "Successfully registered! Signing you in..." message after registering. Or email verification message sent if you will now implement email verification.
+        2. Add Email Verification
+    */
 
     // Show password handlers
     const handleClickShowPassword = () => {
@@ -43,13 +48,25 @@ const Signup = () => {
         handleBackdropOpen()
         const auth = getAuth()
         await createUserWithEmailAndPassword(auth, values.email, values.password)
-            .then(cred => {
-                const usersRef = doc(collection(db, 'users'), cred.id)
-                console.log('User data added', usersRef)
-                handleBackdropClose()
+            .then( async credentials => {
+                await updateProfile(auth.currentUser, {
+                    displayName: values.firstName + " " + values.lastName, 
+                    photoURL: values.photoURL
+                  }).then(async () => {
+                    await setDoc(doc(db, "users", credentials.user.uid), {
+                        name: {
+                            first: values.firstName,
+                            last: values.lastName
+                        },
+                        photoURL: null
+                    });
+                    handleBackdropClose()
+                  }).catch((error) => {
+                    errorCode.current = error.code
+                    handleBackdropClose()
+                  });
             }).catch(error => {
-                console.log("Error", error, error.code, error.message)
-                setSignupFailed(true)
+                errorCode.current = error.code
                 handleBackdropClose()
             })
         handleBackdropClose()
@@ -73,12 +90,6 @@ const Signup = () => {
                             <img className={classes.authLogo} alt="tabp-logo" src={authLogo} />
                             <Typography variant="h4">Create an account</Typography>
                         </Grid>
-
-                        {signupFailed && 
-                            <FormHelperText error>
-                                Error encountered on sign up.
-                            </FormHelperText>
-                        }
                         
                         <Grid container direction="row" spacing={2}>
                             <Grid item xs={6} sm={6}>
@@ -89,6 +100,7 @@ const Signup = () => {
                                         type="text"
                                         color="primary"
                                         InputLabelProps={{ required: false }}
+                                        {...register("firstName")}
                                     />
                             </Grid>
 
@@ -100,6 +112,7 @@ const Signup = () => {
                                     type="text"
                                     color="primary"
                                     InputLabelProps={{ required: false }}
+                                    {...register("lastName")}
                                 />
                             </Grid>
                         </Grid>
@@ -171,6 +184,18 @@ const Signup = () => {
                             />
                         </FormControl>
 
+                        <br />
+                        {errorCode.current === "auth/email-already-in-use" ?
+                            <FormHelperText error>
+                                This email address has already been taken.
+                            </FormHelperText>
+                            :
+                            (Object.keys(errorCode.current).length !== 0 && errorCode.current !== "no-error") && 
+                            <FormHelperText error>
+                                An error was encountered on sign up.
+                            </FormHelperText>
+                        }
+
                         <Grid item align="center">
                             <Button className={classes.submitButton} variant="contained" color="primary" type="submit" disableElevation>
                                 Register
@@ -184,7 +209,7 @@ const Signup = () => {
                         <Link component="button" variant="subtitle2" to="/" onClick={() => history.push("/")}>Back to Home</Link>
                     </Grid>
                 </form>
-                <LoadingBackdrop blackdropCLass={classes.backdrop} openBackdrop={openBackdrop} />
+                <LoadingBackdrop className={classes.backdrop} open={openBackdrop} />
             </Paper>
         </Container>
     )

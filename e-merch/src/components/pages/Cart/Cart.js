@@ -106,7 +106,7 @@ const Cart = ({ userId, cart, updateCart, removeFromCart, emptyCart, loading, al
     return (
         <Container>
             <div className={classes.toolbar} />
-            <Typography className={classes.title} variant="h4" gutterBottom>Shopping Cart</Typography>
+            <Typography className={classes.title} variant="h4" gutterBottom>Cart</Typography>
             { loading ? <Loading message="Loading Cart..." /> : (!cart.length ? <EmptyCart /> : <FilledCart />) }
             
                 {alertProps.delete ? 
@@ -115,7 +115,7 @@ const Cart = ({ userId, cart, updateCart, removeFromCart, emptyCart, loading, al
                     <SnackbarAlert alertProps={alertProps} handleClose={handleSnackbarClose} severity="error" variant="filled" message="An error has occcured!" />
                 }
 
-                <LoadingBackdrop blackdropCLass={classes.backdrop} openBackdrop={openBackdrop} />
+                <LoadingBackdrop className={classes.backdrop} open={openBackdrop} />
 
         </Container>
     )

@@ -48,7 +48,7 @@ const CartItem = ({ item, updateCart, removeFromCart, alertProps, handleSnackbar
                     {!alertProps.addStatus &&
                     <SnackbarAlert alertProps={alertProps} handleClose={handleSnackbarClose} severity="error" variant="filled" message="An error has occcured!" />
                     }
-                    <LoadingBackdrop blackdropCLass={classes.backdrop} openBackdrop={openBackdrop} />
+                    <LoadingBackdrop className={classes.backdrop} open={openBackdrop} />
                 </div>
                 <Button variant="contained" type="button" color="secondary" size="small" onClick={() => { removeFromCart(item.id); handleBackdropOpen(); }}>Remove</Button>
             </CardActions>

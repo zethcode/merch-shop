@@ -65,7 +65,7 @@ const NavBar = ({ cartTotal, userInfo }) => {
         <Button className={classes.authButton} color="inherit" component={Link} to='/signup'>
           REGISTER
         </Button> </>}
-        <LoadingBackdrop blackdropCLass={classes.backdrop} openBackdrop={openBackdrop} />
+        <LoadingBackdrop className={classes.backdrop} open={openBackdrop} />
       </Toolbar>
     </AppBar>
   )
