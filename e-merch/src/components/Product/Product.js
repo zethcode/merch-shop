@@ -3,7 +3,7 @@ import { AddShoppingCart } from '@material-ui/icons';
 import useStyles from './styles';
 import SnackbarAlert from '../SnackbarAlert';
 import LoadingBackdrop from '../LoadingBackdrop';
-import { useEffect, useState, createRef, forwardRef, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 const Product = ({ state, product, addToCart, alertProps, handleClose }) => {
@@ -11,7 +11,7 @@ const Product = ({ state, product, addToCart, alertProps, handleClose }) => {
     const history = useHistory()
     const [initialLoad, setInitialLoad] = useState(true)
     const [openBackdrop, setOpenBackdrop] = useState(false)
-    const backdropRef = useRef(null)
+    // const backdropRef = useRef(null)
 
     useEffect(() => {
         if (!initialLoad) {

@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
 import useStyles from './styles';
-import authLogo from './../../../assets/tabp-black-on-transparent.png';
+import authLogo from './../../../assets/logo/tabp-black-on-transparent.png';
 import LoadingBackdrop from '../../LoadingBackdrop';
 
 const Signin = ({ prevPath }) => {

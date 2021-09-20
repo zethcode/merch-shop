@@ -1,8 +1,8 @@
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { makeStyles, ThemeProvider, createTheme } from '@material-ui/core';
-import { NavBar, Main, NotFound, Cart, Loading } from './components';
-import { useState, useEffect, createRef, useRef } from 'react';
+import { NavBar, Main, NotFound, Cart, Loading, Home } from './components';
+import { useState, useEffect, createRef, useRef, memo } from 'react';
 import { query, where, collection, doc, setDoc, getDoc, getDocs, updateDoc, deleteDoc } from 'firebase/firestore/lite';
 import db, { AuthContextProvider } from "./firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -55,12 +55,14 @@ function App() {
   const [alertProps, setAlertProps] = useState({})
   const [cartAlertProps, setCartAlertProps] = useState({})
   const [userInfo, setUserInfo] = useState({isLoggedIn: false})
-  const [state, setState] = useState("loading");
+  // const [state, setState] = useState("loading");
   const loadingRef = useRef()
   const auth = getAuth()
 
+  let state = useRef("loading")
+
   onAuthStateChanged(auth, (user) => {
-    setState(Boolean(user) ? "loggedin" : "redirect")
+    state.current = (Boolean(user) ? "loggedin" : "redirect")
     setUserInfo(user)
   });
 
@@ -226,17 +228,19 @@ function App() {
     (async () => {
       try {
         const isUserLogged = await getAuth().currentUser;
-        setState(Boolean(isUserLogged) ? "loggedin" : "loading");
+        state.current = (Boolean(isUserLogged) ? "loggedin" : "loading");
       }
       catch (e) {
-        setState("redirect");
+        state.current = "redirect";
       }
     })()
     setUserInfo(userInfo)
-
+    
     getProducts()
-    getCart()
-  }, [userInfo])
+    if (userInfo != null) {
+      getCart()
+    }
+  }, [])
 
   return (
     <div className={classes.root}>
@@ -246,10 +250,11 @@ function App() {
             <>
             <ThemeProvider theme={theme}>
               <NavBar loadingRef={loadingRef} cartTotal={Array.isArray(cart) ? cart.length : Object.keys(cart).length !== 0 ? 1 : 0} userInfo={userInfo} />
-                <Switch>
+              <Switch>
                 <UnauthenticatedRoute exact path="/signup" loadingRef={loadingRef} userInfo={userInfo} component={Signup} />
                 <UnauthenticatedRoute exact path="/signin" loadingRef={loadingRef} userInfo={userInfo} component={Signin} />
-                <Route exact path="/" component={() => <Main loadingRef={loadingRef} state={state} products={products} addToCart={addToCart} loading={productsLoading} alertProps={alertProps} handleClose={handleClose} />} />
+                <Route exact path="/" component={() => <Home />} />
+                {/* <Route exact path="/" component={() => <Main loadingRef={loadingRef} state={state} products={products} addToCart={addToCart} loading={productsLoading} alertProps={alertProps} handleClose={handleClose} />} /> */}
                 <AuthenticatedRoute exact path="/cart" component={() => <Cart loadingRef={loadingRef} userInfo={userInfo} cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} emptyCart={emptyCart} loading={cartLoading} alertProps={cartAlertProps} handleSnackbarClose={handleClose} />} />
                 <Route component={NotFound}/>
               </Switch>

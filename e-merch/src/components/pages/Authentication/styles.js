@@ -11,7 +11,7 @@ export default makeStyles((theme) => ({
         paddingTop: "2%",
     },
     paper: {
-        height: "40em",
+        height: "48em",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

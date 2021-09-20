@@ -4,7 +4,7 @@ import { ShoppingCart } from '@material-ui/icons';
 import useStyles from './styles';
 import { getAuth, signOut } from '@firebase/auth';
 import { useEffect, useState } from 'react';
-import logo from './../../assets/logo-white-on-transparent.png';
+import logo from './../../assets/logo/logo-white-on-transparent.png';
 import LoadingBackdrop from '../LoadingBackdrop';
 
 const NavBar = ({ cartTotal, userInfo }) => {
