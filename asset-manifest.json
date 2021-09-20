@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/merch-shop/static/css/main.bb399dca.chunk.css",
+    "main.js": "/merch-shop/static/js/main.81f1fe59.chunk.js",
+    "main.js.map": "/merch-shop/static/js/main.81f1fe59.chunk.js.map",
+    "runtime-main.js": "/merch-shop/static/js/runtime-main.5b71072d.js",
+    "runtime-main.js.map": "/merch-shop/static/js/runtime-main.5b71072d.js.map",
+    "static/js/2.17720e81.chunk.js": "/merch-shop/static/js/2.17720e81.chunk.js",
+    "static/js/2.17720e81.chunk.js.map": "/merch-shop/static/js/2.17720e81.chunk.js.map",
+    "static/js/3.fceb3fc7.chunk.js": "/merch-shop/static/js/3.fceb3fc7.chunk.js",
+    "static/js/3.fceb3fc7.chunk.js.map": "/merch-shop/static/js/3.fceb3fc7.chunk.js.map",
+    "index.html": "/merch-shop/index.html",
+    "static/css/main.bb399dca.chunk.css.map": "/merch-shop/static/css/main.bb399dca.chunk.css.map",
+    "static/js/2.17720e81.chunk.js.LICENSE.txt": "/merch-shop/static/js/2.17720e81.chunk.js.LICENSE.txt",
+    "static/media/logo-black-on-transparent.3964f9e4.png": "/merch-shop/static/media/logo-black-on-transparent.3964f9e4.png",
+    "static/media/logo-white-on-transparent.f80f3dc7.png": "/merch-shop/static/media/logo-white-on-transparent.f80f3dc7.png",
+    "static/media/tabp-black-on-transparent.6cd6e039.png": "/merch-shop/static/media/tabp-black-on-transparent.6cd6e039.png",
+    "static/media/woman-mountain-walking-2.0ab11999.jpg": "/merch-shop/static/media/woman-mountain-walking-2.0ab11999.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5b71072d.js",
+    "static/js/2.17720e81.chunk.js",
+    "static/css/main.bb399dca.chunk.css",
+    "static/js/main.81f1fe59.chunk.js"
+  ]
+}
