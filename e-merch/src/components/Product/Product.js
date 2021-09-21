@@ -37,20 +37,20 @@ const Product = ({ state, product, addToCart, alertProps, handleClose }) => {
             <CardMedia className={classes.media} image={product.image} title={product.name} />
             <CardContent>
                 <div className={classes.cardContent}>
-                    <Typography variant="h6" gutterBottom>
-                        {product.name}
-                    </Typography>
-                    <Typography variant="h6" >
-                        &#8369;&nbsp;{product.price}
+                    <Typography className={classes.productName} variant="h6" gutterBottom>
+                        <b>{product.name}</b>
                     </Typography>
                 </div>
-                <Typography variant="body2" color="textSecondary">
+                <Typography className={classes.productDescription} variant="body2">
                     {product.description}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing className={classes.cardActions}>
-                <IconButton aria-label="Add To Cart" onClick={() => { handleBackdropOpen(); (state === "loggedin" ? addToCart(product) : history.push("/signin")) }} >
-                    <AddShoppingCart />
+                <Typography className={classes.productPrice} align="left" variant="subtitle1" >
+                    &#8369;&nbsp;{product.price}
+                </Typography>
+                <IconButton aria-label="Add To Cart" onClick={() => { handleBackdropOpen(); (state === "loggedin" ? addToCart(product) : history.push("/tabp-clothing/signin")) }} >
+                    <AddShoppingCart color="primary" />
                 </IconButton>
                 {alertProps.addStatus ?
                     <SnackbarAlert alertProps={alertProps} handleClose={handleClose} severity="success" variant="filled" message="Added to cart successfully!" />

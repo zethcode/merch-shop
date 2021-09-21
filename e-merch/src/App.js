@@ -251,11 +251,11 @@ function App() {
             <ThemeProvider theme={theme}>
               <NavBar loadingRef={loadingRef} cartTotal={Array.isArray(cart) ? cart.length : Object.keys(cart).length !== 0 ? 1 : 0} userInfo={userInfo} />
               <Switch>
-                <UnauthenticatedRoute exact path="/signup" loadingRef={loadingRef} userInfo={userInfo} component={Signup} />
-                <UnauthenticatedRoute exact path="/signin" loadingRef={loadingRef} userInfo={userInfo} component={Signin} />
-                <Route exact path="/" component={() => <Home />} />
-                {/* <Route exact path="/" component={() => <Main loadingRef={loadingRef} state={state} products={products} addToCart={addToCart} loading={productsLoading} alertProps={alertProps} handleClose={handleClose} />} /> */}
-                <AuthenticatedRoute exact path="/cart" component={() => <Cart loadingRef={loadingRef} userInfo={userInfo} cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} emptyCart={emptyCart} loading={cartLoading} alertProps={cartAlertProps} handleSnackbarClose={handleClose} />} />
+                <UnauthenticatedRoute exact path="/tabp-clothing/signup" loadingRef={loadingRef} userInfo={userInfo} component={Signup} />
+                <UnauthenticatedRoute exact path="/tabp-clothing/signin" loadingRef={loadingRef} userInfo={userInfo} component={Signin} />
+                <Route exact path="/tabp-clothing" component={() => <Home state={state} products={products} addToCart={addToCart} loading={productsLoading} alertProps={alertProps} handleClose={handleClose} />} />
+                {/* <Route exact path="/tabp-clothing" component={() => <Main loadingRef={loadingRef} state={state} products={products} addToCart={addToCart} loading={productsLoading} alertProps={alertProps} handleClose={handleClose} />} /> */}
+                <AuthenticatedRoute exact path="/tabp-clothing/cart" component={() => <Cart loadingRef={loadingRef} userInfo={userInfo} cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} emptyCart={emptyCart} loading={cartLoading} alertProps={cartAlertProps} handleSnackbarClose={handleClose} />} />
                 <Route component={NotFound}/>
               </Switch>
             </ThemeProvider>

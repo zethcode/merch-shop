@@ -12,7 +12,7 @@ const NotFound = () => {
             style={{ minHeight: '100vh' }}>
           <Grid item >
             <h3>Error 404: Page not found!</h3>
-            <Link to="/">Go back to home page</Link>
+            <Link to="/tabp-clothing">Go back to home page</Link>
           </Grid>
         </Grid>
     )

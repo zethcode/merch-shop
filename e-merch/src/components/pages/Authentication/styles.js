@@ -7,8 +7,20 @@ export default makeStyles((theme) => ({
     toolbar: theme.mixins.toolbar,
     content: {
         flexGrow: 1,
-        backgroundColor: theme.palette.background.default,
-        paddingTop: "2%",
+        paddingTop: "2em",
+        height: "58.3em",
+        [theme.breakpoints.down("lg")]: {
+            paddingTop: '2em',
+        },
+        [theme.breakpoints.down("md")]: {
+            paddingTop: '2em',
+        },
+        [theme.breakpoints.down("sm")]: {
+            paddingTop: '3em',
+        },
+        [theme.breakpoints.down("xs")]: {
+            paddingTop: '4em',
+        }
     },
     paper: {
         height: "42em",

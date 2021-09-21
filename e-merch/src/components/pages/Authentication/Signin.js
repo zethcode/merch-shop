@@ -7,6 +7,8 @@ import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
 import useStyles from './styles';
 import authLogo from './../../../assets/logo/tabp-black-on-transparent.png';
 import LoadingBackdrop from '../../LoadingBackdrop';
+import authBG from './../../../assets/images/clothes-rack.jpg';
+import { Parallax } from 'react-parallax';
 
 const Signin = ({ prevPath }) => {
     const classes = useStyles()
@@ -58,6 +60,7 @@ const Signin = ({ prevPath }) => {
     }, [])
 
     return (
+        <Parallax bgImage={authBG} bgImageAlt="Clothes Rack" blur={2}>
         <Container className={classes.content}>
             <div className={classes.toolbar} />
             <Paper 
@@ -129,15 +132,16 @@ const Signin = ({ prevPath }) => {
 
                         <Typography variant="subtitle2" align="center">
                             Don't have an account?
-                        <Link component="button" variant="subtitle2" onClick={() => history.push("/signup")}>&nbsp;Sign Up</Link>
+                        <Link component="button" variant="subtitle2" onClick={() => history.push("/tabp-clothing/signup")}>&nbsp;Sign Up</Link>
                         </Typography>
                         <br />
-                        <Link component="button" variant="subtitle2" to="/" onClick={() => history.push("/")}>Back to Home</Link>
+                        <Link component="button" variant="subtitle2" onClick={() => history.push("/tabp-clothing")}>Back to Home</Link>
                     </Grid>
                 </form>
                 <LoadingBackdrop className={classes.backdrop} open={openBackdrop} />
             </Paper>
         </Container>
+        </Parallax>
     )
 }
 

@@ -8,7 +8,9 @@ import { useForm } from 'react-hook-form';
 import LoadingBackdrop from '../../LoadingBackdrop';
 import useStyles from './styles';
 import db from '../../../firebase';
-import authLogo from './../../../assets/tabp-black-on-transparent.png';
+import authLogo from './../../../assets/logo/tabp-black-on-transparent.png';
+import authBG from './../../../assets/images/clothes-rack.jpg';
+import { Parallax } from 'react-parallax';
 
 const Signup = () => {
     const classes = useStyles()
@@ -77,6 +79,7 @@ const Signup = () => {
     // }, [])
 
     return (
+        <Parallax bgImage={authBG} bgImageAlt="Clothes Rack" blur={2}>
         <Container className={classes.content}>
             <div className={classes.toolbar} />
             <Paper 
@@ -203,15 +206,16 @@ const Signup = () => {
                         </Grid>
                         <Typography variant="subtitle2" align="center">
                             Already have an account? 
-                            <Link component="button" variant="subtitle2" onClick={() => history.push("/signin")}>&nbsp;Sign In</Link>
+                            <Link component="button" variant="subtitle2" onClick={() => history.push("/tabp-clothing/signin")}>&nbsp;Sign In</Link>
                         </Typography>
                         <br />
-                        <Link component="button" variant="subtitle2" to="/" onClick={() => history.push("/")}>Back to Home</Link>
+                        <Link component="button" variant="subtitle2" onClick={() => history.push("/tabp-clothing")}>Back to Home</Link>
                     </Grid>
                 </form>
                 <LoadingBackdrop className={classes.backdrop} open={openBackdrop} />
             </Paper>
         </Container>
+        </Parallax>
     )
 }
 

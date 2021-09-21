@@ -1,21 +1,23 @@
-import { Collapse, Container, CssBaseline, Grid, Typography } from '@material-ui/core';
-import { useState, useEffect, PureComponent, memo } from 'react';
+import { Collapse, Container, CssBaseline, Grid, Typography, Slide, Grow, Link, Zoom } from '@material-ui/core';
+import { useState, useEffect, PureComponent, memo, useRef } from 'react';
+import { Parallax } from 'react-parallax';
+import titleBG from './../../../assets/images/group-men-car.jpg';
+import productBG from './../../../assets/images/clothes-rack-3.jpg';
+import useWindowPosition from '../../hook/useWindowPosition';
 import Loading from '../../Loading';
 import Product from '../../Product/Product';
-import headerImage from './../../../assets/images/woman-mountain-walking-2.jpg';
-import headerLogo from './../../../assets/logo/logo-black-on-transparent.png';
 import useStyles from './styles';
+import { useMediaQuery } from 'react-responsive';
 
-
-const Home = memo(() => {
-    const classes = useStyles()
+const Home = memo(({loading, products, state, addToCart, alertProps, handleClose}) => {
     const [headerChecked, setHeaderChecked] = useState(false)
+    const classes = useStyles()
+    const aboutChecked = useWindowPosition('about-section')
+    const productsChecked = useWindowPosition('products-section')
+    const reviewsChecked = useWindowPosition('reviews-section')
+    const isMobile = useMediaQuery({ query: `(max-width: 959px)` })
 
-    console.log("re-rendered home")
-
-    const handleHeaderChange = () => {
-        setHeaderChecked((prev) => !prev);
-    };
+    console.log("reviews", reviewsChecked)
 
     useEffect(() => {
         setHeaderChecked(true)
@@ -23,24 +25,109 @@ const Home = memo(() => {
       
     return (
         <div className={classes.root}>
-            <div className={classes.header}>
-                <div className={classes.toolbar} />
-                <Collapse in={headerChecked} {...(headerChecked && { timeout: 1700 })} collapsedSize={50}>
-                    <Grid 
-                        className={classes.headerContainer} 
-                        container
-                        // align="center"
-                        // justifyContent="center"
-                        direction="column" >
-                        <Grid item>
-                            <Typography className={classes.headerTitle} variant="h1">Tela At Iba Pa <br/>Clothing </Typography>
-                            <Typography variant="subtitle1">Never be afraid to express yourself through style.</Typography>
-                        </Grid>
-                    </Grid>
-                </Collapse>
+            <Parallax className={classes.header} bgImage={titleBG} bgImageAlt="Explore Style">
+                {/* <div className={classes.toolbar} /> */}
+                <div className={classes.darkBG}>
+                    <Container className={classes.headerContainer} direction="column" >
+                        <Slide direction="up" in={headerChecked} {...(headerChecked && { timeout: 1000 })}>
+                            <Grid item>
+                                <Typography className={classes.headerTitle} variant="h1">Tela At Iba Pa</Typography>
+                                <Typography className={classes.headerTitle2} variant="h3">Clothing Company</Typography><br/>
+                                <Typography className={classes.headerSubtitle} variant="subtitle1">Explore your style. Never be afraid to express yourself through fashion.</Typography>
+                            </Grid>
+                        </Slide>
+                    </Container>
+                </div>
+            </Parallax>
+            <div className={classes.about} >
+                <Container id="about-section" direction="column" >
+                    <Typography color="primary" variant="h5"><b>ABOUT</b></Typography><br/>
+                    <Slide direction="right" in={aboutChecked || isMobile} {...((aboutChecked || isMobile) && { timeout: 1000 })}>
+                        <Typography className={classes.aboutTitle} variant="h3">This is not an official store.</Typography>
+                    </Slide>
+                    <br/>
+                    <Slide direction="left" in={aboutChecked || isMobile} {...((aboutChecked || isMobile) && { timeout: 1000 })}>
+                        <Typography className={classes.aboutTitle} variant="h3">This website is functional, try it out!</Typography>
+                    </Slide>
+                    <br/>
+                    <Slide direction="right" in={aboutChecked || isMobile} {...((aboutChecked || isMobile) && { timeout: 1000 })}>
+                        <Typography className={classes.aboutTitle} variant="h3">The development is still in progress.</Typography>
+                    </Slide>
+                    <br/>
+                    <Slide direction="left" in={aboutChecked || isMobile} {...((aboutChecked || isMobile) && { timeout: 1000 })}>
+                        <div>
+                            <Typography className={classes.aboutSubtitle} variant="h5">Created with React.js and Firebase (Cloud Firestore)<br/>As of the moment, this website is made for software development purposes only.</Typography><br/>
+                            <Typography className={classes.aboutSubtitle2} variant="subtitle2">Check out the source code on my
+                                <Link className={classes.aboutSubtitle2} href="https://github.com/zethcode/tabp-clothing/tree/main/e-merch">&nbsp;github repository</Link>
+                            </Typography>
+                        </div>
+                    </Slide>
+                    {/* <Slide direction="left" in={aboutChecked || isMobile} {...((aboutChecked || isMobile) && { timeout: 1000 })}>
+                        <Typography variant="h5">The <b>tabp</b> development team will be adding more exciting features very soon!</Typography>
+                    </Slide> */}
+                </Container>
             </div>
-            <div className={classes.section1}>
-                <img className={classes.headerImage} alt="woman-trekking" src={headerImage} />
+            <div id="products-section">
+            <Parallax className={classes.products} bgImage={productBG} bgImageAlt="Clothes" strength={600} blur={5}>
+                <Grid item>
+                    <Typography align="center" className={classes.productsTitle} variant="h3">CHECK OUT OUR COLLECTION</Typography>
+                </Grid>
+                <Container className={classes.productsContainer} direction="column" >
+                    <Grid 
+                        container
+                        spacing={2}
+                        className={classes.productsList}>
+                    {loading ? <Loading message="Loading Products..." /> : 
+                    (!products ? 
+                        <h2>No items in stock</h2> :
+                        products.map((product) => (
+                                <Grow key={product.id} className={classes.productItems} in={productsChecked || isMobile} style={{ transformOrigin: '0 0 0' }} {...((productsChecked || isMobile) && { timeout: 1700 })}>
+                                    <Grid item key={product.id} lg={3} md={4} sm={6} xs={6}>
+                                        <Product state={state} product={product} addToCart={addToCart} alertProps={alertProps} handleClose={handleClose} />
+                                    </Grid>
+                                </Grow>
+                        ))
+                    )}
+                    </Grid>
+                </Container>
+            </Parallax>
+            </div>
+            <div id="reviews-section">
+                <Grid container direction="column" className={classes.reviews}>
+                    <Typography variant="h4"><b>FAKE REVIEWS & TESTIMONIALS</b></Typography>
+                    <div className={classes.toolbar} />
+                    <Grid item>
+                        <Zoom align="right" in={reviewsChecked || isMobile} {...((reviewsChecked || isMobile) && { timeout: 1300 })}>
+                            <div>
+                                <Typography variant="h5"><i>"The products they offer have outstanding quality."</i></Typography>
+                                <Typography variant="subtitle1">Kendall Jenner - July 2021</Typography>
+                            </div>
+                        </Zoom>
+                        <div className={classes.toolbar} />
+                        <Zoom align="left" in={reviewsChecked || isMobile} {...((reviewsChecked || isMobile) && { timeout: 1300 })}>
+                            <div>
+                                <Typography variant="h5"><i>"The fabric used for the clothes is remarkable.<br/>I feel so comfortable wearing them, both inside and out!"</i></Typography>
+                                <Typography variant="subtitle1">Selena Gomez - February 2021</Typography>
+                            </div>
+                        </Zoom>
+                        <div className={classes.toolbar} />
+                        <Zoom align="right" in={reviewsChecked || isMobile} {...((reviewsChecked || isMobile) && { timeout: 1300 })}>
+                            <div>
+                                <Typography variant="h5"><i>"I really loved the shirts. Great service,<br/>big plus for the smooth and fast transaction."</i></Typography>
+                                <Typography variant="subtitle1">Emma Stone - December 2020</Typography>
+                            </div>
+                        </Zoom>
+                        <div className={classes.toolbar} />
+                        <Zoom in={reviewsChecked || isMobile} {...((reviewsChecked || isMobile) && { timeout: 1300 })}>
+                            <Typography className={classes.reviewSubtitle} variant="h5">These reviews might be fake, but these are what we should expect for having excellent quality products, right?</Typography>
+                        </Zoom>
+                    </Grid>
+                </Grid>
+            </div>
+            <div className={classes.footer}>
+                Footer
+                Contact Us
+                {/* <img className={classes.headerImage} alt="woman-trekking" src={headerImage} /> */}
             </div>
             <CssBaseline />
         </div>

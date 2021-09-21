@@ -1,6 +1,6 @@
 {
   "name": "e-merch",
-  "homepage": "https://zethcode.github.io/merch-shop/",
+  "homepage": "https://zethcode.github.io/tabp-clothing/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -15,6 +15,7 @@
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.15.3",
     "react-parallax": "^3.3.0",
+    "react-responsive": "^9.0.0-beta.4",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.2"

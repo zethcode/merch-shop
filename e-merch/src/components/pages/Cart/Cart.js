@@ -41,7 +41,7 @@ const Cart = ({ userId, cart, updateCart, removeFromCart, emptyCart, loading, al
         <Typography variant="subtitle1" gutterBottom>
             There are no items in your cart.
             <br/>
-            <Link to="/">Shop now!</Link>
+            <Link to="/tabp-clothing">Shop now!</Link>
         </Typography>
     )
 
