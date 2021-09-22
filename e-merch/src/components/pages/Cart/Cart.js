@@ -9,7 +9,6 @@ import SnackbarAlert from '../../SnackbarAlert';
 import LoadingBackdrop from '../../LoadingBackdrop';
 
 const Cart = ({ userId, cart, updateCart, removeFromCart, emptyCart, loading, alertProps, handleSnackbarClose }) => {
-    userId = 'user-arckie'
     const classes = useStyles()
     const [subTotal, setSubTotal] = useState(0)
     const [open, setOpen] = useState(false)

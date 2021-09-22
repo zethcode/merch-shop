@@ -1,23 +1,20 @@
-import { FormControl, Grid, TextField, Button, InputAdornment, IconButton, Typography, Link, FormHelperText, Container, Paper } from '@material-ui/core';
-import { useState, useRef, useCallback } from 'react';
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from '@firebase/auth';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore/lite';
-import { Visibility, VisibilityOff } from '@material-ui/icons';
-import { useHistory } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import LoadingBackdrop from '../../LoadingBackdrop';
-import useStyles from './styles';
-import db from '../../../firebase';
+import { FormControl, Grid, TextField, Button, InputAdornment, IconButton, Typography, FormHelperText, Container, Paper } from '@material-ui/core';
 import authLogo from './../../../assets/logo/tabp-black-on-transparent.png';
-import authBG from './../../../assets/images/clothes-rack.jpg';
-import { Parallax } from 'react-parallax';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
+import { useState, useRef, useCallback } from 'react';
+import LoadingBackdrop from '../../LoadingBackdrop';
+import { useHistory, Link } from 'react-router-dom';
+import { useAuthState } from './../../../firebase'
+import { useForm } from 'react-hook-form';
+import useStyles from './styles';
 
 const Signup = () => {
-    const classes = useStyles()
-    const history = useHistory()
     const { register, handleSubmit, formState: { errors }, watch } = useForm({})
     const [showPassword, setShowPassword] = useState(false)
     const [openBackdrop, setOpenBackdrop] = useState(false)
+    const { signUp } = useAuthState()
+    const history = useHistory()
+    const classes = useStyles()
     const errorCode = useRef({})
     const password = useRef({})
     password.current = watch("password", "")
@@ -48,38 +45,24 @@ const Signup = () => {
     // Submit handler
     const handleSignupSubmit = useCallback(async (values) => {
         handleBackdropOpen()
-        const auth = getAuth()
-        await createUserWithEmailAndPassword(auth, values.email, values.password)
-            .then( async credentials => {
-                await updateProfile(auth.currentUser, {
-                    displayName: values.firstName + " " + values.lastName, 
-                    photoURL: values.photoURL
-                  }).then(async () => {
-                    await setDoc(doc(db, "users", credentials.user.uid), {
-                        name: {
-                            first: values.firstName,
-                            last: values.lastName
-                        },
-                        photoURL: null
-                    });
-                    handleBackdropClose()
-                  }).catch((error) => {
-                    errorCode.current = error.code
-                    handleBackdropClose()
-                  });
-            }).catch(error => {
-                errorCode.current = error.code
-                handleBackdropClose()
-            })
+
+        try {
+            await signUp(values)
+            
+            history.push("/tabp-clothing")
+            handleBackdropClose()
+        } catch (error) {
+            errorCode.current = error.code
+        }
+        
         handleBackdropClose()
-    }, [])
+    }, [history, signUp])
 
     // useEffect(() => {
     //     handleBackdropClose()
     // }, [])
 
     return (
-        <Parallax bgImage={authBG} bgImageAlt="Clothes Rack" blur={2}>
         <Container className={classes.content}>
             <div className={classes.toolbar} />
             <Paper 
@@ -206,16 +189,16 @@ const Signup = () => {
                         </Grid>
                         <Typography variant="subtitle2" align="center">
                             Already have an account? 
-                            <Link component="button" variant="subtitle2" onClick={() => history.push("/tabp-clothing/signin")}>&nbsp;Sign In</Link>
+                            <Link className={classes.link} variant="subtitle2" to="/tabp-clothing/signin">&nbsp;Sign In</Link>
+                            <br/><br/>
+                            <Link className={classes.link} variant="subtitle2" to="/tabp-clothing">Back to Home</Link>
                         </Typography>
                         <br />
-                        <Link component="button" variant="subtitle2" onClick={() => history.push("/tabp-clothing")}>Back to Home</Link>
                     </Grid>
                 </form>
                 <LoadingBackdrop className={classes.backdrop} open={openBackdrop} />
             </Paper>
         </Container>
-        </Parallax>
     )
 }
 

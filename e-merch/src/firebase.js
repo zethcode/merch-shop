@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore/lite';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { doc, getFirestore, setDoc } from 'firebase/firestore/lite';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut } from 'firebase/auth';
 import { useEffect, useState, useContext, createContext } from 'react';
 
 const firebaseConfig = {
@@ -22,38 +22,56 @@ export const AuthContext = createContext();
 
 export const AuthContextProvider = props => {
   const [user, setUser] = useState()
-  const [error, setError] = useState()
+  const [loading, setLoading] = useState(true)
+  const auth = getAuth();
+
+  const signIn = (values) => {
+    return signInWithEmailAndPassword(auth, values.email, values.password)
+  }
+
+  const signUp = (values) => {
+    return createUserWithEmailAndPassword(auth, values.email, values.password)
+      .then( async credentials => {
+          await updateProfile(auth.currentUser, {
+              displayName: values.firstName + " " + values.lastName, 
+              photoURL: values.photoURL
+            }).then(async () => {
+              await setDoc(doc(db, "users", credentials.user.uid), {
+                  name: {
+                      first: values.firstName,
+                      last: values.lastName
+                  },
+                  photoURL: null
+              });
+            }).catch((error) => {
+              return error
+            });
+      }).catch(error => {
+        return error
+      })
+  }
+
+  const signOutUser = () => {
+    signOut(auth)
+  }
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(getAuth(), setUser, setError)
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user)
+      setLoading(false)
+    })
     return () => unsubscribe()
-  }, [])
+  }, [auth])
 
-  return <AuthContext.Provider value={{ user, error}} {...props} />
+  return (
+    <AuthContext.Provider value={{user, signIn, signUp, signOutUser, loading}} {...props}>
+      {!loading && props.children}
+    </AuthContext.Provider>
+  )
 }
 
-export const useAuthState = async () => {
-  const auth = await useContext(AuthContext)
-  return { ...auth, isAuthenticated: auth.user != null}
-}
-
-export const getUserInfo = () => {
-  // Get current authenticated user if user has logged in
-  const auth = getAuth();
-  let data = {}
-
-  onAuthStateChanged(auth, (user) => {
-    console.log("user sud", user)
-    if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/firebase.User
-      console.log("naa man user", user)
-      data = ({ id: user.uid, email: user.email, isLoggedIn: true })
-    } else {
-      // User is signed out
-      console.log("not logged in gud", { isLoggedIn: false })
-      data = { isLoggedIn: false }
-    }
-    console.log('user data', data)
-  });
+export const useAuthState = () => {
+  return useContext(AuthContext)
+  // const auth = useContext(AuthContext)
+  // return { ...auth, isAuthenticated: auth.user != null}
 }

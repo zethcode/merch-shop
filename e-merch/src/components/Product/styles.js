@@ -60,9 +60,5 @@ export default makeStyles((theme) => ({
       [theme.breakpoints.down("xs")]: {
         fontSize: '15px'
       }
-    },
-    backdrop: {
-      zIndex: theme.zIndex.drawer + 1,
-      color: '#fff',
     }
 }));

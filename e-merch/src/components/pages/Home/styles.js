@@ -14,14 +14,6 @@ export default makeStyles((theme) => ({
         backgroundColor: theme.palette.background.default,
         padding: theme.spacing(3)
     },
-    // header: {
-    //     textAlign: 'center',
-    //     alignItems: 'center',
-    //     height: '100vh',
-    //     width: '100%', //'135.95em',
-    //     // height: '100em',
-    //     // width: '135.95em',
-    // },
     headerContainer: {
         flex: 1,
         height: '100vh',
@@ -222,30 +214,68 @@ export default makeStyles((theme) => ({
     productItems: {
         height: '100%',
     },
+    reviewTitle: {
+        fontSize: '3rem',
+        [theme.breakpoints.down("lg")]: {
+            fontSize: '3rem'
+        },
+        [theme.breakpoints.down("md")]: {
+            fontSize: '2.5rem'
+        },
+        [theme.breakpoints.down("sm")]: {
+            fontSize: '2rem'
+        },
+        [theme.breakpoints.down("xs")]: {
+            fontSize: '1.5rem'
+        }
+    },
     reviews: {
-        height: '46em',
+        height: '100%',
         textAlign: 'center',
         overflow: 'hidden',
         paddingTop: '3em',
         paddingLeft: '1.5em',
         paddingRight: '1.5em',
+        paddingBottom: '3em',
         backgroundColor: 'rgb(106,212,217)',
         background: 'linear-gradient(180deg, rgba(106,212,217,1) 0%, rgba(178,217,219,1) 100%)',
         [theme.breakpoints.down("lg")]: {
             paddingTop: '3em',
-            height: '46em',
+            paddingBottom: '3em',
         },
         [theme.breakpoints.down("md")]: {
-            paddingTop: '1em',
-            height: '44em',
+            paddingTop: '1.5em',
+            paddingBottom: '1.5em',
+        }
+    },
+    reviewQuote: {
+        fontSize: '2rem',
+        [theme.breakpoints.down("lg")]: {
+            fontSize: "1.9rem"
+        },
+        [theme.breakpoints.down("md")]: {
+            fontSize: "1.6rem"
         },
         [theme.breakpoints.down("sm")]: {
-            paddingTop: '1em',
-            height: '54em',
+            fontSize: "1.4rem"
         },
         [theme.breakpoints.down("xs")]: {
-            paddingTop: '1em',
-            height: '55em',
+            fontSize: "1.3rem"
+        }
+    },
+    reviewer: {
+        fontSize: '1.3rem',
+        [theme.breakpoints.down("lg")]: {
+            fontSize: "1.2rem"
+        },
+        [theme.breakpoints.down("md")]: {
+            fontSize: "1rem"
+        },
+        [theme.breakpoints.down("sm")]: {
+            fontSize: "0.9rem"
+        },
+        [theme.breakpoints.down("xs")]: {
+            fontSize: "0.8rem"
         }
     },
     reviewSubtitle: {
@@ -262,5 +292,5 @@ export default makeStyles((theme) => ({
         [theme.breakpoints.down("xs")]: {
             fontSize: "0.8rem"
         }
-    }
+    },
 }));

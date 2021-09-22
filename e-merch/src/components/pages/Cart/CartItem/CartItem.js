@@ -1,4 +1,4 @@
-import { Typography, Button, Card, CardActions, CardContent, CardMedia, IconButton, Backdrop, CircularProgress } from '@material-ui/core';
+import { Typography, Button, Card, CardActions, CardContent, CardMedia, IconButton } from '@material-ui/core';
 import useStyles from './styles';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';

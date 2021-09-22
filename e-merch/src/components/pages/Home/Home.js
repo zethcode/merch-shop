@@ -1,5 +1,5 @@
-import { Collapse, Container, CssBaseline, Grid, Typography, Slide, Grow, Link, Zoom } from '@material-ui/core';
-import { useState, useEffect, PureComponent, memo, useRef } from 'react';
+import { Container, CssBaseline, Grid, Typography, Slide, Link, Zoom } from '@material-ui/core';
+import { useState, useEffect } from 'react';
 import { Parallax } from 'react-parallax';
 import titleBG from './../../../assets/images/group-men-car.jpg';
 import productBG from './../../../assets/images/clothes-rack-3.jpg';
@@ -8,16 +8,16 @@ import Loading from '../../Loading';
 import Product from '../../Product/Product';
 import useStyles from './styles';
 import { useMediaQuery } from 'react-responsive';
+import SnackbarAlert from '../../SnackbarAlert';
 
-const Home = memo(({loading, products, state, addToCart, alertProps, handleClose}) => {
+const Home = () => {
     const [headerChecked, setHeaderChecked] = useState(false)
     const classes = useStyles()
     const aboutChecked = useWindowPosition('about-section')
-    const productsChecked = useWindowPosition('products-section')
     const reviewsChecked = useWindowPosition('reviews-section')
     const isMobile = useMediaQuery({ query: `(max-width: 959px)` })
 
-    console.log("reviews", reviewsChecked)
+    console.log("Re-Rendered")
 
     useEffect(() => {
         setHeaderChecked(true)
@@ -25,11 +25,12 @@ const Home = memo(({loading, products, state, addToCart, alertProps, handleClose
       
     return (
         <div className={classes.root}>
+            <SnackbarAlert />
             <Parallax className={classes.header} bgImage={titleBG} bgImageAlt="Explore Style">
                 {/* <div className={classes.toolbar} /> */}
                 <div className={classes.darkBG}>
                     <Container className={classes.headerContainer} direction="column" >
-                        <Slide direction="up" in={headerChecked} {...(headerChecked && { timeout: 1000 })}>
+                        <Slide direction="up" in={headerChecked} {...(headerChecked && { timeout: 1500 })}>
                             <Grid item>
                                 <Typography className={classes.headerTitle} variant="h1">Tela At Iba Pa</Typography>
                                 <Typography className={classes.headerTitle2} variant="h3">Clothing Company</Typography><br/>
@@ -77,49 +78,39 @@ const Home = memo(({loading, products, state, addToCart, alertProps, handleClose
                         container
                         spacing={2}
                         className={classes.productsList}>
-                    {loading ? <Loading message="Loading Products..." /> : 
-                    (!products ? 
-                        <h2>No items in stock</h2> :
-                        products.map((product) => (
-                                <Grow key={product.id} className={classes.productItems} in={productsChecked || isMobile} style={{ transformOrigin: '0 0 0' }} {...((productsChecked || isMobile) && { timeout: 1700 })}>
-                                    <Grid item key={product.id} lg={3} md={4} sm={6} xs={6}>
-                                        <Product state={state} product={product} addToCart={addToCart} alertProps={alertProps} handleClose={handleClose} />
-                                    </Grid>
-                                </Grow>
-                        ))
-                    )}
+                            <Product />
                     </Grid>
                 </Container>
             </Parallax>
             </div>
             <div id="reviews-section">
                 <Grid container direction="column" className={classes.reviews}>
-                    <Typography variant="h4"><b>FAKE REVIEWS & TESTIMONIALS</b></Typography>
+                    <Typography className={classes.reviewTitle} variant="h4"><b>FAKE REVIEWS & TESTIMONIALS</b></Typography>
                     <div className={classes.toolbar} />
-                    <Grid item>
+                    <Grid item className={classes.reviewText}>
                         <Zoom align="right" in={reviewsChecked || isMobile} {...((reviewsChecked || isMobile) && { timeout: 1300 })}>
                             <div>
-                                <Typography variant="h5"><i>"The products they offer have outstanding quality."</i></Typography>
-                                <Typography variant="subtitle1">Kendall Jenner - July 2021</Typography>
+                                <Typography className={classes.reviewQuote} variant="h5"><i>"The products they offer have outstanding quality."</i></Typography>
+                                <Typography className={classes.reviewer} variant="subtitle1">Kendall Jenner - July 2021</Typography>
                             </div>
                         </Zoom>
                         <div className={classes.toolbar} />
                         <Zoom align="left" in={reviewsChecked || isMobile} {...((reviewsChecked || isMobile) && { timeout: 1300 })}>
                             <div>
-                                <Typography variant="h5"><i>"The fabric used for the clothes is remarkable.<br/>I feel so comfortable wearing them, both inside and out!"</i></Typography>
-                                <Typography variant="subtitle1">Selena Gomez - February 2021</Typography>
+                                <Typography className={classes.reviewQuote} variant="h5"><i>"The fabric used for the clothes is remarkable.<br/>I feel so comfortable wearing them, both inside and out!"</i></Typography>
+                                <Typography className={classes.reviewer} variant="subtitle1">Selena Gomez - February 2021</Typography>
                             </div>
                         </Zoom>
                         <div className={classes.toolbar} />
                         <Zoom align="right" in={reviewsChecked || isMobile} {...((reviewsChecked || isMobile) && { timeout: 1300 })}>
                             <div>
-                                <Typography variant="h5"><i>"I really loved the shirts. Great service,<br/>big plus for the smooth and fast transaction."</i></Typography>
-                                <Typography variant="subtitle1">Emma Stone - December 2020</Typography>
+                                <Typography className={classes.reviewQuote} variant="h5"><i>"I really loved the shirts. Great service,<br/>big plus for the smooth and fast transaction."</i></Typography>
+                                <Typography className={classes.reviewer} variant="subtitle1">Emma Stone - December 2020</Typography>
                             </div>
                         </Zoom>
                         <div className={classes.toolbar} />
                         <Zoom in={reviewsChecked || isMobile} {...((reviewsChecked || isMobile) && { timeout: 1300 })}>
-                            <Typography className={classes.reviewSubtitle} variant="h5">These reviews might be fake, but these are what we should expect for having excellent quality products, right?</Typography>
+                            <Typography className={classes.reviewSubtitle} variant="h5">These reviews might be fake, but these are expected for having excellent quality products, right?</Typography>
                         </Zoom>
                     </Grid>
                 </Grid>
@@ -132,6 +123,6 @@ const Home = memo(({loading, products, state, addToCart, alertProps, handleClose
             <CssBaseline />
         </div>
     )
-})
+}
 
 export default Home

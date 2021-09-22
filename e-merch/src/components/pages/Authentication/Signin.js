@@ -1,24 +1,21 @@
-import { FormControl, Grid, TextField, Button, InputLabel, Input, InputAdornment, IconButton, Typography, Link, FormHelperText, Container, Paper } from '@material-ui/core';
+import { FormControl, Grid, TextField, Button, InputLabel, Input, InputAdornment, IconButton, Typography, FormHelperText, Container, Paper } from '@material-ui/core';
+import authLogo from './../../../assets/logo/tabp-black-on-transparent.png';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useCallback, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
 import useStyles from './styles';
-import authLogo from './../../../assets/logo/tabp-black-on-transparent.png';
 import LoadingBackdrop from '../../LoadingBackdrop';
-import authBG from './../../../assets/images/clothes-rack.jpg';
-import { Parallax } from 'react-parallax';
+import { useAuthState } from './../../../firebase';
 
 const Signin = ({ prevPath }) => {
-    const classes = useStyles()
-    const history = useHistory()
-    const [signinFailed, setSigninFailed] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm({}) 
+    const [signinFailed, setSigninFailed] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
     const [openBackdrop, setOpenBackdrop] = useState(false)
-
-    console.log("ang path", prevPath)
+    const { signIn } = useAuthState()
+    const classes = useStyles()
+    const history = useHistory()
 
     // Show password handlers
     const handleClickShowPassword = () => {
@@ -39,28 +36,25 @@ const Signin = ({ prevPath }) => {
     }
 
     // Submit handler
-    const handleLoginSubmit = useCallback(async values => {
+    const handleLogin = useCallback(async values => {
         handleBackdropOpen()
-        const auth = getAuth()
         try {
-            await signInWithEmailAndPassword(auth, values.email, values.password)
-                .then((userCredentials) => {
-                    // const location = useLocation();
-                    // const { redirectTo } = queryString.parse(location.search);
-                    // history.push(redirectTo == null ? "/apps" : redirectTo);
-                })
-                .catch((error) => {
-                    console.log("Error encountered signing in!")
-                })
-        } catch (e) {
-            // Add better message handling here for UX
+            const userCredentials = await signIn(values)
+            handleBackdropClose()
+            console.log("ang user cred sa signin", userCredentials)
+            // dispatch(setUserDetails({
+            //     email: userCredentials.user.email,
+            //     userId: userCredentials.user.uid
+            // }))
+            history.push("/tabp-clothing")
+        } catch (error) {
+            console.log("error 2", error)
             setSigninFailed(true)
             handleBackdropClose()
         }
-    }, [])
+    }, [history, signIn])
 
     return (
-        <Parallax bgImage={authBG} bgImageAlt="Clothes Rack" blur={2}>
         <Container className={classes.content}>
             <div className={classes.toolbar} />
             <Paper 
@@ -69,7 +63,7 @@ const Signin = ({ prevPath }) => {
                 maxWidth="xs" 
                 elevation={5}>
 
-                <form onSubmit={handleSubmit(handleLoginSubmit)}>
+                <form onSubmit={handleSubmit(handleLogin)}>
                     <Grid className={classes.container} container direction="column" justifyContent="space-around" spacing={2}>
                         
                         <Grid item align="center">
@@ -124,24 +118,24 @@ const Signin = ({ prevPath }) => {
                             />
                         </FormControl>
                         <br />
-                        <Link component="button" align="right" variant="subtitle2" onClick={() => console.log("Insert forgot passwod functionality here.")}>Forgot password?</Link>
-
+                        <Typography variant="subtitle2" align="right">
+                            <Link className={classes.link} to="/" variant="subtitle2" onClick={() => console.log("Insert forgot passwod functionality here.")}>Forgot password?</Link>
+                        </Typography>
                         <Grid item align="center">
                             <Button className={classes.submitButton} variant="contained" color="primary" type="submit" disableElevation>Sign In</Button>
                         </Grid>
 
                         <Typography variant="subtitle2" align="center">
                             Don't have an account?
-                        <Link component="button" variant="subtitle2" onClick={() => history.push("/tabp-clothing/signup")}>&nbsp;Sign Up</Link>
+                            <Link className={classes.link} variant="subtitle2" to="/tabp-clothing/signup">&nbsp;Sign Up</Link>
+                            <br /><br/>
+                            <Link className={classes.link} variant="subtitle2" to="/tabp-clothing">Back to Home</Link>
                         </Typography>
-                        <br />
-                        <Link component="button" variant="subtitle2" onClick={() => history.push("/tabp-clothing")}>Back to Home</Link>
                     </Grid>
                 </form>
                 <LoadingBackdrop className={classes.backdrop} open={openBackdrop} />
             </Paper>
         </Container>
-        </Parallax>
     )
 }
 

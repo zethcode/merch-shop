@@ -2,17 +2,22 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import { AppBar, Button, IconButton, Badge, Toolbar, useScrollTrigger, Slide } from '@material-ui/core';
 import { ShoppingCart } from '@material-ui/icons';
 import useStyles from './styles';
-import { getAuth, signOut } from '@firebase/auth';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, } from 'react';
 import logo from './../../assets/logo/logo-white-on-transparent.png';
 import LoadingBackdrop from '../LoadingBackdrop';
+import { useAuthState } from './../../firebase';
+// import { selectUserDetails } from '../../app/userSlice';
+// import { useSelector } from 'react-redux';
 
-const NavBar = ({ cartTotal, userInfo }) => {
+const NavBar = ({ cartTotal }) => {
   const [openBackdrop, setOpenBackdrop] = useState(false)
+  const { signOutUser, user } = useAuthState()
   const classes = useStyles()
   const history = useHistory()
   const location = useLocation()
   const trigger = useScrollTrigger()
+
+  console.log("user info sa navbar", user)
 
   // Backdrop handlers
   const handleBackdropClose = () => {
@@ -23,15 +28,16 @@ const NavBar = ({ cartTotal, userInfo }) => {
       setOpenBackdrop(true)
   };
 
-  const handleSignOut = () => {
+  const handleSignOut = useCallback(async () => {
     handleBackdropOpen()
     try {
-      signOut(getAuth())
-      history.push("/")
+      signOutUser()
+      history.push("/tabp-clothing")
     } catch (e) {
       alert(e.message)
     }
-  }
+    handleBackdropClose()
+  }, [history, signOutUser])
   
   useEffect(() => {
     handleBackdropClose()
@@ -47,7 +53,7 @@ const NavBar = ({ cartTotal, userInfo }) => {
           </Button>
 
           <div className={classes.grow} />
-          {userInfo ?
+          {user !== null ?
           <>
           <div className={classes.button}>
               <IconButton aria-label="Show cart items" color="inherit" component={Link} to='/tabp-clothing/cart'>

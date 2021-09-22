@@ -1,25 +1,48 @@
-import { Card, CardMedia, CardContent, CardActions, Typography, IconButton } from '@material-ui/core';
+import { Card, CardMedia, CardContent, CardActions, Typography, IconButton, Grow, Grid } from '@material-ui/core';
+import { GetProducts } from '../../services/products';
+import { AddItem, SetAlert } from '../../services/cart';
 import { AddShoppingCart } from '@material-ui/icons';
+import { useEffect, useState } from 'react';
 import useStyles from './styles';
 import SnackbarAlert from '../SnackbarAlert';
 import LoadingBackdrop from '../LoadingBackdrop';
-import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import useWindowPosition from '../hook/useWindowPosition';
+import { useMediaQuery } from 'react-responsive';
+import { useAuthState } from '../../firebase';
+import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../Loading';
+import { setAlert, selectProductIsAdded } from '../../app/snackbarSlice';
 
-const Product = ({ state, product, addToCart, alertProps, handleClose }) => {
-    const classes = useStyles()
-    const history = useHistory()
-    const [initialLoad, setInitialLoad] = useState(true)
+const Product = () => {
+    const [products, setProducts] = useState({list: [], loading: true})
+    const isMobile = useMediaQuery({ query: `(max-width: 959px)` })
+    const productsChecked = useWindowPosition('products-section')
     const [openBackdrop, setOpenBackdrop] = useState(false)
-    // const backdropRef = useRef(null)
+    const dispatch = useDispatch()
+    const history = useHistory()
+    const classes = useStyles()
+    const { user } = useAuthState()
+    const itemIsAdded = useSelector(selectProductIsAdded)
+
+    // console.log("product added status", itemIsAdded)
 
     useEffect(() => {
-        if (!initialLoad) {
-            alertProps.open = false
-        }
-        setInitialLoad(false)
         handleBackdropClose()
-    }, [alertProps, initialLoad])
+
+        GetProducts().then((returnValue) => setProducts({list: [...returnValue], loading: false}))
+    }, [])
+
+    useEffect(() => {
+        // itemIsAdded ? 
+        // SetAlert(dispatch, true, true, "success", "Added to cart successfully!") :
+        // SetAlert(dispatch, true, false, "error", "The item is already in your cart!")
+    }, [dispatch, itemIsAdded])
+
+    // Add to cart handler
+    const handleAddToCart = (product) => {
+        AddItem(user, dispatch, product)
+    }
     
     // Backdrop handlers
     const handleBackdropClose = () => {
@@ -33,33 +56,43 @@ const Product = ({ state, product, addToCart, alertProps, handleClose }) => {
     // TODO: ADD A CIRCULAR LOADING ON CART NUMBER AND ADD TO CART BUTTONS IF THE CART HASN'T LOADED YET
 
     return (
-        <Card className={classes.root}>
-            <CardMedia className={classes.media} image={product.image} title={product.name} />
-            <CardContent>
-                <div className={classes.cardContent}>
-                    <Typography className={classes.productName} variant="h6" gutterBottom>
-                        <b>{product.name}</b>
-                    </Typography>
-                </div>
-                <Typography className={classes.productDescription} variant="body2">
-                    {product.description}
-                </Typography>
-            </CardContent>
-            <CardActions disableSpacing className={classes.cardActions}>
-                <Typography className={classes.productPrice} align="left" variant="subtitle1" >
-                    &#8369;&nbsp;{product.price}
-                </Typography>
-                <IconButton aria-label="Add To Cart" onClick={() => { handleBackdropOpen(); (state === "loggedin" ? addToCart(product) : history.push("/tabp-clothing/signin")) }} >
-                    <AddShoppingCart color="primary" />
-                </IconButton>
-                {alertProps.addStatus ?
-                    <SnackbarAlert alertProps={alertProps} handleClose={handleClose} severity="success" variant="filled" message="Added to cart successfully!" />
-                    :
-                    <SnackbarAlert alertProps={alertProps} handleClose={handleClose} severity="error" variant="filled" message="The item is already in your cart!" />
-                }
-                <LoadingBackdrop className={classes.backdrop} open={openBackdrop} />
-            </CardActions>
-        </Card>
+        products.loading ? <Loading message="Loading Products..." /> : 
+        (!products.list ? 
+            <h2>No items in stock</h2> :
+            products.list.map((product) => (
+                <Grow key={product.id} className={classes.productItems} in={productsChecked || isMobile} style={{ transformOrigin: '0 0 0' }} {...((productsChecked || isMobile) && { timeout: 1700 })}>
+                    <Grid item key={product.id} lg={3} md={4} sm={6} xs={6}>
+                        <Card className={classes.root}>
+                            <CardMedia className={classes.media} image={product.image} title={product.name} />
+                            <CardContent>
+                                <div className={classes.cardContent}>
+                                    <Typography className={classes.productName} variant="h6" gutterBottom>
+                                        <b>{product.name}</b>
+                                    </Typography>
+                                </div>
+                                <Typography className={classes.productDescription} variant="body2">
+                                    {product.description}
+                                </Typography>
+                            </CardContent>
+                            <CardActions disableSpacing className={classes.cardActions}>
+                                <Typography className={classes.productPrice} align="left" variant="subtitle1" >
+                                    &#8369;&nbsp;{product.price}
+                                </Typography>
+                                <IconButton aria-label="Add To Cart" onClick={() => { handleBackdropOpen(); (user ? handleAddToCart(product) : history.push("/tabp-clothing/signin")); }} >
+                                    <AddShoppingCart color="primary" />
+                                </IconButton>
+                                {/* {itemIsAdded ?
+                                    <SnackbarAlert severity="success" variant="filled" message="Added to cart successfully!" />
+                                    :
+                                    <SnackbarAlert severity="error" variant="filled" message="The item is already in your cart!" />
+                                } */}
+                                <LoadingBackdrop />
+                            </CardActions>
+                        </Card>
+                    </Grid>
+                </Grow>
+            ))
+        )
     )
 }
 
