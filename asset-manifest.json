@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/tabp-clothing/static/css/main.bb399dca.chunk.css",
-    "main.js": "/tabp-clothing/static/js/main.1cda6985.chunk.js",
-    "main.js.map": "/tabp-clothing/static/js/main.1cda6985.chunk.js.map",
-    "runtime-main.js": "/tabp-clothing/static/js/runtime-main.ba9a9cfa.js",
-    "runtime-main.js.map": "/tabp-clothing/static/js/runtime-main.ba9a9cfa.js.map",
-    "static/js/2.db23b35d.chunk.js": "/tabp-clothing/static/js/2.db23b35d.chunk.js",
-    "static/js/2.db23b35d.chunk.js.map": "/tabp-clothing/static/js/2.db23b35d.chunk.js.map",
-    "static/js/3.686f4249.chunk.js": "/tabp-clothing/static/js/3.686f4249.chunk.js",
-    "static/js/3.686f4249.chunk.js.map": "/tabp-clothing/static/js/3.686f4249.chunk.js.map",
+    "main.css": "/tabp-clothing/static/css/main.fa7fd17b.chunk.css",
+    "main.js": "/tabp-clothing/static/js/main.7019a1ee.chunk.js",
+    "main.js.map": "/tabp-clothing/static/js/main.7019a1ee.chunk.js.map",
+    "runtime-main.js": "/tabp-clothing/static/js/runtime-main.dd458fa7.js",
+    "runtime-main.js.map": "/tabp-clothing/static/js/runtime-main.dd458fa7.js.map",
+    "static/js/2.07b52d56.chunk.js": "/tabp-clothing/static/js/2.07b52d56.chunk.js",
+    "static/js/2.07b52d56.chunk.js.map": "/tabp-clothing/static/js/2.07b52d56.chunk.js.map",
+    "static/js/3.556a344a.chunk.js": "/tabp-clothing/static/js/3.556a344a.chunk.js",
+    "static/js/3.556a344a.chunk.js.map": "/tabp-clothing/static/js/3.556a344a.chunk.js.map",
     "index.html": "/tabp-clothing/index.html",
-    "static/css/main.bb399dca.chunk.css.map": "/tabp-clothing/static/css/main.bb399dca.chunk.css.map",
-    "static/js/2.db23b35d.chunk.js.LICENSE.txt": "/tabp-clothing/static/js/2.db23b35d.chunk.js.LICENSE.txt",
+    "static/css/main.fa7fd17b.chunk.css.map": "/tabp-clothing/static/css/main.fa7fd17b.chunk.css.map",
+    "static/js/2.07b52d56.chunk.js.LICENSE.txt": "/tabp-clothing/static/js/2.07b52d56.chunk.js.LICENSE.txt",
     "static/media/clothes-rack-3.f4b97b7e.jpg": "/tabp-clothing/static/media/clothes-rack-3.f4b97b7e.jpg",
     "static/media/clothes-rack.08417d0d.jpg": "/tabp-clothing/static/media/clothes-rack.08417d0d.jpg",
     "static/media/group-men-car.6f01fec0.jpg": "/tabp-clothing/static/media/group-men-car.6f01fec0.jpg",
@@ -19,9 +19,9 @@
     "static/media/tabp-black-on-transparent.6cd6e039.png": "/tabp-clothing/static/media/tabp-black-on-transparent.6cd6e039.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.ba9a9cfa.js",
-    "static/js/2.db23b35d.chunk.js",
-    "static/css/main.bb399dca.chunk.css",
-    "static/js/main.1cda6985.chunk.js"
+    "static/js/runtime-main.dd458fa7.js",
+    "static/js/2.07b52d56.chunk.js",
+    "static/css/main.fa7fd17b.chunk.css",
+    "static/js/main.7019a1ee.chunk.js"
   ]
 }
