@@ -9,6 +9,11 @@ import Product from '../../Product/Product';
 import useStyles from './styles';
 import { useMediaQuery } from 'react-responsive';
 import SnackbarAlert from '../../SnackbarAlert';
+import { selectIsOpen } from '../../../app/snackbarSlice';
+import { selectLoadingStatus } from '../../../app/loadingSlice';
+import { useSelector } from 'react-redux';
+import Footer from '../../Footer';
+import LoadingBackdrop from '../../LoadingBackdrop';
 
 const Home = () => {
     const [headerChecked, setHeaderChecked] = useState(false)
@@ -16,8 +21,10 @@ const Home = () => {
     const aboutChecked = useWindowPosition('about-section')
     const reviewsChecked = useWindowPosition('reviews-section')
     const isMobile = useMediaQuery({ query: `(max-width: 959px)` })
+    const snackbarOpen = useSelector(selectIsOpen)
+    const isLoading = useSelector(selectLoadingStatus)
 
-    console.log("Re-Rendered")
+    // console.log("Re-Rendered")
 
     useEffect(() => {
         setHeaderChecked(true)
@@ -25,7 +32,8 @@ const Home = () => {
       
     return (
         <div className={classes.root}>
-            <SnackbarAlert />
+            {snackbarOpen && <SnackbarAlert />}
+            <LoadingBackdrop />
             <Parallax className={classes.header} bgImage={titleBG} bgImageAlt="Explore Style">
                 {/* <div className={classes.toolbar} /> */}
                 <div className={classes.darkBG}>
@@ -115,11 +123,7 @@ const Home = () => {
                     </Grid>
                 </Grid>
             </div>
-            <div className={classes.footer}>
-                Footer
-                Contact Us
-                {/* <img className={classes.headerImage} alt="woman-trekking" src={headerImage} /> */}
-            </div>
+            <Footer />
             <CssBaseline />
         </div>
     )

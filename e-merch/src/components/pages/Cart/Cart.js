@@ -7,12 +7,17 @@ import { Link } from 'react-router-dom';
 import Loading from '../../Loading';
 import SnackbarAlert from '../../SnackbarAlert';
 import LoadingBackdrop from '../../LoadingBackdrop';
+import { useAuthState } from '../../../firebase';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCart } from '../../../app/cartSlice';
 
-const Cart = ({ userId, cart, updateCart, removeFromCart, emptyCart, loading, alertProps, handleSnackbarClose }) => {
+const Cart = () => {
     const classes = useStyles()
     const [subTotal, setSubTotal] = useState(0)
     const [open, setOpen] = useState(false)
-    const [openBackdrop, setOpenBackdrop] = useState(false)
+    const dispatch = useDispatch()
+    const { user } = useAuthState()
+    const cart = useSelector(selectCart)
 
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
@@ -27,14 +32,18 @@ const Cart = ({ userId, cart, updateCart, removeFromCart, emptyCart, loading, al
         setOpen(false)
     }
 
-    // Backdrop handlers
-    const handleBackdropClose = () => {
-        setOpenBackdrop(false)
-    };
-    
-    const handleBackdropOpen = () => {
-        setOpenBackdrop(true)
-    };
+    const handleEmptyCart = () => {
+        EmptyCart(dispatch, user)
+    }
+
+    useEffect(() => {
+        if (cart.length) {
+            const sum = cart.reduce((subTotal, cartItem) => subTotal + (cartItem.product.price * cartItem.quantity),0)
+            setSubTotal(sum);
+        }
+        
+        // handleBackdropClose()
+    }, [cart])
 
     const EmptyCart = () => (
         <Typography variant="subtitle1" gutterBottom>
@@ -44,22 +53,13 @@ const Cart = ({ userId, cart, updateCart, removeFromCart, emptyCart, loading, al
         </Typography>
     )
 
-    useEffect(() => {
-        if (cart.length) {
-            const sum = cart.reduce((subTotal, cartItem) => subTotal + (cartItem.product.price * cartItem.quantity),0)
-            setSubTotal(sum);
-        }
-        
-        handleBackdropClose()
-    }, [cart])
-
     const FilledCart = () => (
         <>
         <Grid container spacing={3}>
             {cart.map((item) => {
                 return (
                     <Grid item xs={6} sm={4} md={4} lg={3} key={item.id}>
-                        <CartItem item={item} updateCart={updateCart} removeFromCart={removeFromCart} alertProps={alertProps} handleSnackbarClose={handleSnackbarClose} />
+                        <CartItem item={item} />
                     </Grid>
                 )
             })}
@@ -91,7 +91,7 @@ const Cart = ({ userId, cart, updateCart, removeFromCart, emptyCart, loading, al
                         <Button onClick={handleClose} color="secondary">
                             Cancel
                         </Button>
-                        <Button color="primary" variant="contained" onClick={() => {emptyCart(userId); handleClose(); handleBackdropOpen(); }} >
+                        <Button color="primary" variant="contained" onClick={() => handleEmptyCart()} >
                             Yes
                         </Button>
                     </DialogActions>
@@ -105,17 +105,17 @@ const Cart = ({ userId, cart, updateCart, removeFromCart, emptyCart, loading, al
     return (
         <Container>
             <div className={classes.toolbar} />
-            <Typography className={classes.title} variant="h4" gutterBottom>Cart</Typography>
-            { loading ? <Loading message="Loading Cart..." /> : (!cart.length ? <EmptyCart /> : <FilledCart />) }
+            <Typography className={classes.title} variant="h4" gutterBottom>Cart Items</Typography><br/>
+            {!cart.length ? <EmptyCart /> : <FilledCart />}
+            {/* { loading ? <Loading message="Loading Cart..." /> : (!cart.length ? <EmptyCart /> : <FilledCart />) } */}
             
-                {alertProps.delete ? 
-                    <SnackbarAlert alertProps={alertProps} handleClose={handleSnackbarClose} severity="success" variant="filled" message="Emptied the cart successfully!" />
-                    :
-                    <SnackbarAlert alertProps={alertProps} handleClose={handleSnackbarClose} severity="error" variant="filled" message="An error has occcured!" />
-                }
-
-                <LoadingBackdrop className={classes.backdrop} open={openBackdrop} />
-
+            {/* {alertProps.delete ? 
+                <SnackbarAlert alertProps={alertProps} handleClose={handleSnackbarClose} severity="success" variant="filled" message="Emptied the cart successfully!" />
+                :
+                <SnackbarAlert alertProps={alertProps} handleClose={handleSnackbarClose} severity="error" variant="filled" message="An error has occcured!" />
+            } */}
+            <SnackbarAlert />
+            <LoadingBackdrop />
         </Container>
     )
 }

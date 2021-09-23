@@ -10,10 +10,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoadingBackdrop = () => {
-    const classes = useStyles()
     const isLoading = useSelector(selectLoadingStatus)
-
-    // console.log("loading status", isLoading)
+    const classes = useStyles()
 
     return (
         <Backdrop className={classes.backdrop} open={isLoading}>

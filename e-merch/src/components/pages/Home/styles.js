@@ -116,7 +116,7 @@ export default makeStyles((theme) => ({
             padding: '1em'
         },
         [theme.breakpoints.down("xs")]: {
-            height: '28em',
+            height: '27em',
             padding: '2em'
         }
     },

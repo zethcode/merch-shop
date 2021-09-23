@@ -3,7 +3,9 @@ import authBG from './../../../assets/images/clothes-rack.jpg';
 
 export default makeStyles((theme) => ({
     root: {
-        flexGrow: 1
+        backgroundImage: `url(${authBG})`,
+        // backgroundSize: '1920px 1550px',
+        backgroundSize: 'cover',
     },
     toolbar: theme.mixins.toolbar,
     content: {
@@ -22,8 +24,6 @@ export default makeStyles((theme) => ({
         [theme.breakpoints.down('xs')]: {
             paddingTop: '4em',
         },
-        backgroundImage: `url(${authBG})`,
-        backgroundSize: '1920px 1080px'
     },
     paper: {
         height: '42em',

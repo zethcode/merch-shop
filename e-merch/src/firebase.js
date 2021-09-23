@@ -43,11 +43,12 @@ export const AuthContextProvider = props => {
                   },
                   photoURL: null
               });
+              return {type: "success"}
             }).catch((error) => {
-              return error
+              return {type: "error", errorCode: error.code}
             });
       }).catch(error => {
-        return error
+        return {type: "error", errorCode: error.code}
       })
   }
 

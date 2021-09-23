@@ -7,7 +7,7 @@ import db from "../firebase";
 // Cart Methods
 
 // Fetch cart collection by user id
-export const GetCart = async (user, dispatch) => {
+export const GetCart = async (dispatch, user) => {
     const cartQuery = await query(collection(db, "cart"), where("userID", "==", user.uid))
     const docSnap = await getDocs(cartQuery)
     const items = []
@@ -28,10 +28,11 @@ export const GetCart = async (user, dispatch) => {
 };
 
 // Add a cart item to cart by user id
-export const AddItem = async (user, dispatch, product) => {
+export const AddItem = async (dispatch, user, product) => {
     const cartRef = collection(db, "cart")
     const cartQuery = await query(cartRef, where("userID", "==", user.uid), where("productID", "==", product.id))
     const cartSnap = await getDocs(cartQuery);
+    SetLoading(dispatch, true)
         
     if (cartSnap.empty) {
         const addCartRef = doc(cartRef)
@@ -40,16 +41,18 @@ export const AddItem = async (user, dispatch, product) => {
         await setDoc(addCartRef, data)
         const cartData = { ...data, product: product, id: addCartRef.id }
         dispatch(addToCart(cartData))
+        SetLoading(dispatch, false)
         SetAlert(dispatch, true, true, "success", "Added to cart successfully!")
     } else {
+        SetLoading(dispatch, false)
         SetAlert(dispatch, true, false, "error", "The item is already in your cart!")
     }
 };
 
-export const SetAlert = async(dispatch, isOpen, isAdded, severity, message) => {
+export const SetAlert = async(dispatch, isOpen, success, severity, message) => {
     dispatch(setAlert({
         isOpen: isOpen, 
-        isAdded: isAdded, 
+        success: success, 
         severity: severity,
         message: message
     }))
@@ -118,6 +121,7 @@ export const DeleteCart = async (user, dispatch) => {
     //     delete: true
     //   })
     } else {
+      SetAlert(dispatch, true, false, "error", "The item is already in your cart!")
     //   setCartAlertProps({
     //     open: true,
     //     addStatus: false,

@@ -6,19 +6,27 @@ import SnackbarAlert from '../../../SnackbarAlert';
 import LoadingBackdrop from '../../../LoadingBackdrop';
 import { useEffect, useState } from 'react';
 
-const CartItem = ({ item, updateCart, removeFromCart, alertProps, handleSnackbarClose }) => {
+const CartItem = ({ item }) => {
     const classes = useStyles()
     const [initialLoad, setInitialLoad] = useState(true)
     const [openBackdrop, setOpenBackdrop] = useState(false)
     
     // To close the Snackbar on component load (fixes the problem where snackbars open status stay open if the page loads a different component and comes back to this component)
     useEffect(() => {
-        if (!initialLoad) {
-            alertProps.open = false
-        }
-        setInitialLoad(false)
-        handleBackdropClose()
-    }, [alertProps, initialLoad])
+        // if (!initialLoad) {
+        //     alertProps.open = false
+        // }
+        // setInitialLoad(false)
+        // handleBackdropClose()
+    }, [])
+
+    const handleUpdateCart = () => {
+
+    }
+
+    const handleRemoveItem = () => {
+
+    }
 
     // Backdrop handlers
     const handleBackdropClose = () => {
@@ -38,19 +46,19 @@ const CartItem = ({ item, updateCart, removeFromCart, alertProps, handleSnackbar
             </CardContent>
             <CardActions className={classes.CardActions}>
                 <div className={classes.buttons}>
-                    <IconButton aria-label="Subtract Quantity" size="medium" disabled={item.quantity === 1} onClick={() => { updateCart(item, item.quantity - 1); handleBackdropOpen(); }}>
+                    <IconButton aria-label="Subtract Quantity" size="medium" disabled={item.quantity === 1} onClick={() => handleUpdateCart(item, item.quantity-1)}>
                         <IndeterminateCheckBoxIcon />
                     </IconButton>
                     <Typography>{item.quantity}</Typography>
-                    <IconButton aria-label="Add Quantity" size="medium" onClick={() => { updateCart(item, item.quantity + 1); handleBackdropOpen(); }}>
+                    <IconButton aria-label="Add Quantity" size="medium" onClick={() => handleUpdateCart(item, item.quantity+1)}>
                         <AddBoxIcon />
                     </IconButton>
-                    {!alertProps.addStatus &&
+                    {/* {!alertProps.addStatus &&
                     <SnackbarAlert alertProps={alertProps} handleClose={handleSnackbarClose} severity="error" variant="filled" message="An error has occcured!" />
                     }
-                    <LoadingBackdrop className={classes.backdrop} open={openBackdrop} />
+                    <LoadingBackdrop className={classes.backdrop} open={openBackdrop} /> */}
                 </div>
-                <Button variant="contained" type="button" color="secondary" size="small" onClick={() => { removeFromCart(item.id); handleBackdropOpen(); }}>Remove</Button>
+                <Button variant="contained" type="button" color="secondary" size="small" onClick={() => handleRemoveItem(item.id)}>Remove</Button>
             </CardActions>
         </Card>
     )

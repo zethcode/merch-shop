@@ -4,12 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectIsOpen, selectMessage, selectSeverity, setAlert } from '../app/snackbarSlice';
 
 const SnackbarAlert = () => {
-    const dispatch = useDispatch()
     const severity = useSelector(selectSeverity)
     const message = useSelector(selectMessage)
     const open = useSelector(selectIsOpen)
-
-    console.log("snackbar status", open, message, severity)
+    const dispatch = useDispatch()
     
     const TransitionLeft = (props) => {
         return <Slide {...props} direction="left" />;
