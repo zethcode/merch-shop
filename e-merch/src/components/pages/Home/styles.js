@@ -193,7 +193,7 @@ export default makeStyles((theme) => ({
         color: '#fff',
         paddingTop: '2em',
         paddingBottom: '5em',
-        overflowY: 'scroll',
+        overflowY: 'auto',
         '&::-webkit-scrollbar': {
             width: '0.4em'
         },
@@ -237,8 +237,8 @@ export default makeStyles((theme) => ({
         paddingLeft: '1.5em',
         paddingRight: '1.5em',
         paddingBottom: '3em',
-        backgroundColor: 'rgb(106,212,217)',
-        background: 'linear-gradient(180deg, rgba(106,212,217,1) 0%, rgba(178,217,219,1) 100%)',
+        backgroundColor: 'rgb(225,220,220)',
+        background: 'linear-gradient(180deg, rgba(225,220,220,1) 0%, rgba(255,255,255,1) 46%)',
         [theme.breakpoints.down("lg")]: {
             paddingTop: '3em',
             paddingBottom: '3em',

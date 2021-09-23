@@ -4,25 +4,24 @@ import { Parallax } from 'react-parallax';
 import titleBG from './../../../assets/images/group-men-car.jpg';
 import productBG from './../../../assets/images/clothes-rack-3.jpg';
 import useWindowPosition from '../../hook/useWindowPosition';
-import Loading from '../../Loading';
 import Product from '../../Product/Product';
 import useStyles from './styles';
 import { useMediaQuery } from 'react-responsive';
 import SnackbarAlert from '../../SnackbarAlert';
-import { selectIsOpen } from '../../../app/snackbarSlice';
 import { selectLoadingStatus } from '../../../app/loadingSlice';
+import { selectIsOpen } from '../../../app/snackbarSlice';
 import { useSelector } from 'react-redux';
 import Footer from '../../Footer';
 import LoadingBackdrop from '../../LoadingBackdrop';
 
 const Home = () => {
     const [headerChecked, setHeaderChecked] = useState(false)
-    const classes = useStyles()
-    const aboutChecked = useWindowPosition('about-section')
-    const reviewsChecked = useWindowPosition('reviews-section')
     const isMobile = useMediaQuery({ query: `(max-width: 959px)` })
+    const reviewsChecked = useWindowPosition('reviews-section')
+    const aboutChecked = useWindowPosition('about-section')
     const snackbarOpen = useSelector(selectIsOpen)
     const isLoading = useSelector(selectLoadingStatus)
+    const classes = useStyles()
 
     // console.log("Re-Rendered")
 
@@ -33,18 +32,19 @@ const Home = () => {
     return (
         <div className={classes.root}>
             {snackbarOpen && <SnackbarAlert />}
-            <LoadingBackdrop />
+            {isLoading && <LoadingBackdrop />}
             <Parallax className={classes.header} bgImage={titleBG} bgImageAlt="Explore Style">
-                {/* <div className={classes.toolbar} /> */}
                 <div className={classes.darkBG}>
                     <Container className={classes.headerContainer} direction="column" >
-                        <Slide direction="up" in={headerChecked} {...(headerChecked && { timeout: 1500 })}>
-                            <Grid item>
-                                <Typography className={classes.headerTitle} variant="h1">Tela At Iba Pa</Typography>
-                                <Typography className={classes.headerTitle2} variant="h3">Clothing Company</Typography><br/>
-                                <Typography className={classes.headerSubtitle} variant="subtitle1">Explore your style. Never be afraid to express yourself through fashion.</Typography>
-                            </Grid>
-                        </Slide>
+                        <Grid container justifyContent="center" alignItems="center" style={{overflow: 'hidden'}}>
+                            <Slide direction="up" in={headerChecked} {...(headerChecked && { timeout: 1500 })}>
+                                <Grid item>
+                                    <Typography className={classes.headerTitle} variant="h1">Tela At Iba Pa</Typography>
+                                    <Typography className={classes.headerTitle2} variant="h3">Clothing Company</Typography><br/>
+                                    <Typography className={classes.headerSubtitle} variant="subtitle1">Explore your style. Never be afraid to express yourself through fashion.</Typography>
+                                </Grid>
+                            </Slide>
+                        </Grid>
                     </Container>
                 </div>
             </Parallax>
@@ -65,7 +65,7 @@ const Home = () => {
                     <br/>
                     <Slide direction="left" in={aboutChecked || isMobile} {...((aboutChecked || isMobile) && { timeout: 1000 })}>
                         <div>
-                            <Typography className={classes.aboutSubtitle} variant="h5">Created with React.js and Firebase (Cloud Firestore)<br/>As of the moment, this website is made for software development purposes only.</Typography><br/>
+                            <Typography className={classes.aboutSubtitle} variant="h5">Created with React.js and Firebase (Cloud Firestore)<br/>I apologize in advance for bugs that you may or may not encounter :D</Typography><br/>
                             <Typography className={classes.aboutSubtitle2} variant="subtitle2">Check out the source code on my
                                 <Link className={classes.aboutSubtitle2} href="https://github.com/zethcode/tabp-clothing/tree/main/e-merch">&nbsp;github repository</Link>
                             </Typography>

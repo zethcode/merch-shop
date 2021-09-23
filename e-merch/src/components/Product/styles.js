@@ -27,8 +27,6 @@ export default makeStyles((theme) => ({
       [theme.breakpoints.down("md")]: {
         fontSize: '15px',
       },
-      [theme.breakpoints.down("sm")]: {
-      },
       [theme.breakpoints.down("xs")]: {
         fontSize: '13px'
       }
@@ -41,8 +39,6 @@ export default makeStyles((theme) => ({
       [theme.breakpoints.down("md")]: {
         fontSize: '13px',
       },
-      [theme.breakpoints.down("sm")]: {
-      },
       [theme.breakpoints.down("xs")]: {
         fontSize: '10px'
       }
@@ -54,8 +50,6 @@ export default makeStyles((theme) => ({
       },
       [theme.breakpoints.down("md")]: {
         fontSize: '17px',
-      },
-      [theme.breakpoints.down("sm")]: {
       },
       [theme.breakpoints.down("xs")]: {
         fontSize: '15px'

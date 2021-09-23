@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Grid, Typography, Button, Slide, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import { Container, Grid, Typography, Button, Slide, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Box, Paper } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import useStyles from './styles';
 import CartItem from './CartItem/CartItem';
@@ -10,6 +10,7 @@ import LoadingBackdrop from '../../LoadingBackdrop';
 import { useAuthState } from '../../../firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCart } from '../../../app/cartSlice';
+import Footer from '../../Footer';
 
 const Cart = () => {
     const classes = useStyles()
@@ -36,6 +37,10 @@ const Cart = () => {
         EmptyCart(dispatch, user)
     }
 
+    const handleCheckout = () => {
+        console.log("Checking out...")
+    }
+
     useEffect(() => {
         if (cart.length) {
             const sum = cart.reduce((subTotal, cartItem) => subTotal + (cartItem.product.price * cartItem.quantity),0)
@@ -55,17 +60,42 @@ const Cart = () => {
 
     const FilledCart = () => (
         <>
+        
         <Grid container spacing={3}>
-            {cart.map((item) => {
-                return (
-                    <Grid item xs={6} sm={4} md={4} lg={3} key={item.id}>
-                        <CartItem item={item} />
-                    </Grid>
-                )
-            })}
+            <Grid className={classes.itemContainer} item xs={8}>
+                {cart.map((item) => {
+                    return (
+                        <CartItem item={item} key={item.id}/>
+                    )
+                })}
+            </Grid>
+            <Grid className={classes.summaryContainer} item xs={4}>
+                <Paper className={classes.summary}>
+                    <Box>
+                        Summary
+                    </Box>
+                    <br/>
+                    <Box>
+                        Subtotal (0 items): 
+                    </Box>
+                    <Box>
+                        Shipping Fee: 
+                    </Box>
+                    <br/>
+                    <Box>
+                        Total: 
+                    </Box>
+                    <br/>
+                    <Box align="center">
+                        <Button className={classes.checkoutButton} size="small" type="button" variant="contained" color="primary" onClick={() => handleCheckout()}>
+                            Checkout
+                        </Button>
+                    </Box>
+                </Paper>
+            </Grid>
         </Grid>
         <div className={classes.cardDetails}>
-            <Typography variant="h5">Subtotal: &#8369;&nbsp;{subTotal}</Typography>
+            {/* <Typography variant="h5">Subtotal: &#8369;&nbsp;{subTotal}</Typography>
             <div>
                 <Button className={classes.emptyButton} size="small" type="button" variant="contained" color="secondary"  onClick={handleClickOpen}>
                     Empty Cart
@@ -96,14 +126,14 @@ const Cart = () => {
                         </Button>
                     </DialogActions>
                 </Dialog>
-                
-            </div>
+            </div> */}
         </div>
         </>
     )
 
     return (
-        <Container>
+        <>
+        <Container style={{minHeight: "72.4vh", backgroundColor: "rgb(0, 0, 0, 0.07)"}}>
             <div className={classes.toolbar} />
             <Typography className={classes.title} variant="h4" gutterBottom>Cart Items</Typography><br/>
             {!cart.length ? <EmptyCart /> : <FilledCart />}
@@ -117,6 +147,8 @@ const Cart = () => {
             <SnackbarAlert />
             <LoadingBackdrop />
         </Container>
+        <Footer />
+        </>
     )
 }
 
