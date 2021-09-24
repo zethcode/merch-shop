@@ -1,18 +1,20 @@
-import { Container, CssBaseline, Grid, Typography, Slide, Link, Zoom } from '@material-ui/core';
+import { Container, CssBaseline, Grid, Typography, Slide, Link, Zoom, Paper, Box } from '@material-ui/core';
 import { useState, useEffect } from 'react';
 import { Parallax } from 'react-parallax';
 import titleBG from './../../../assets/images/group-men-car.jpg';
-import productBG from './../../../assets/images/clothes-rack-3.jpg';
+import productBG from './../../../assets/images/bnw-graffiti-wall-low.jpg';
 import useWindowPosition from '../../hook/useWindowPosition';
 import Product from '../../Product/Product';
 import useStyles from './styles';
 import { useMediaQuery } from 'react-responsive';
 import SnackbarAlert from '../../SnackbarAlert';
+import { useSelector, useDispatch} from 'react-redux';
 import { selectLoadingStatus } from '../../../app/loadingSlice';
-import { selectIsOpen } from '../../../app/snackbarSlice';
-import { useSelector } from 'react-redux';
+import { setAlert, selectIsOpen } from '../../../app/snackbarSlice';
 import Footer from '../../Footer';
 import LoadingBackdrop from '../../LoadingBackdrop';
+import { useLocation } from 'react-router-dom';
+import { scroller, animateScroll, Element } from 'react-scroll';
 
 const Home = () => {
     const [headerChecked, setHeaderChecked] = useState(false)
@@ -21,23 +23,44 @@ const Home = () => {
     const aboutChecked = useWindowPosition('about-section')
     const snackbarOpen = useSelector(selectIsOpen)
     const isLoading = useSelector(selectLoadingStatus)
+    const location = useLocation()
+    const dispatch = useDispatch() 
     const classes = useStyles()
 
     // console.log("Re-Rendered")
 
     useEffect(() => {
+        if (location.hash) {
+            scroller.scrollTo("productsSection", {
+                duration: 1500,
+                delay: 200,
+                smooth: true
+              })
+        } else {
+            animateScroll.scrollToTop({
+                duration: 800,
+                delay: 10,
+                smooth: true
+            })
+        }
         setHeaderChecked(true)
-    }, [])
+        dispatch(setAlert({
+            isOpen: false,
+            success: false,
+            severity: null,
+            message: null
+        }))
+    }, [location, dispatch])
       
     return (
-        <div className={classes.root}>
+        <div className={classes.root} id="home-root">
             {snackbarOpen && <SnackbarAlert />}
             {isLoading && <LoadingBackdrop />}
-            <Parallax className={classes.header} bgImage={titleBG} bgImageAlt="Explore Style">
+            <Parallax className={classes.header} bgImage={titleBG} bgImageAlt="Explore Style" strength={400}>
                 <div className={classes.darkBG}>
                     <Container className={classes.headerContainer} direction="column" >
                         <Grid container justifyContent="center" alignItems="center" style={{overflow: 'hidden'}}>
-                            <Slide direction="up" in={headerChecked} {...(headerChecked && { timeout: 1500 })}>
+                            <Slide direction="up" in={headerChecked} {...(headerChecked && { timeout: 1000 })}>
                                 <Grid item>
                                     <Typography className={classes.headerTitle} variant="h1">Tela At Iba Pa</Typography>
                                     <Typography className={classes.headerTitle2} variant="h3">Clothing Company</Typography><br/>
@@ -48,8 +71,8 @@ const Home = () => {
                     </Container>
                 </div>
             </Parallax>
-            <div className={classes.about} >
-                <Container id="about-section" direction="column" >
+            <div className={classes.about} id="about-section">
+                <Container direction="column" >
                     <Typography color="primary" variant="h5"><b>ABOUT</b></Typography><br/>
                     <Slide direction="right" in={aboutChecked || isMobile} {...((aboutChecked || isMobile) && { timeout: 1000 })}>
                         <Typography className={classes.aboutTitle} variant="h3">This is not an official store.</Typography>
@@ -71,30 +94,31 @@ const Home = () => {
                             </Typography>
                         </div>
                     </Slide>
-                    {/* <Slide direction="left" in={aboutChecked || isMobile} {...((aboutChecked || isMobile) && { timeout: 1000 })}>
-                        <Typography variant="h5">The <b>tabp</b> development team will be adding more exciting features very soon!</Typography>
-                    </Slide> */}
                 </Container>
             </div>
-            <div id="products-section">
-            <Parallax className={classes.products} bgImage={productBG} bgImageAlt="Clothes" strength={600} blur={5}>
+            <Element id="products-section" name="productsSection">
+            <Parallax className={classes.products} bgImage={productBG} bgImageAlt="Explore Style" strength={400}>
                 <Grid item>
-                    <Typography align="center" className={classes.productsTitle} variant="h3">CHECK OUT OUR COLLECTION</Typography>
+                    <Box style={{width: '100%', backgroundColor: 'black'}}>
+                        <Typography align="center" className={classes.productsTitle} variant="h3"><b>CHECK OUT OUR SMALL COLLECTION</b></Typography>
+                    </Box>
                 </Grid>
+                <br/>
                 <Container className={classes.productsContainer} direction="column" >
                     <Grid 
                         container
                         spacing={2}
+                        justifyContent="center"
                         className={classes.productsList}>
                             <Product />
                     </Grid>
                 </Container>
             </Parallax>
-            </div>
+            </Element>
             <div id="reviews-section">
                 <Grid container direction="column" className={classes.reviews}>
                     <Typography className={classes.reviewTitle} variant="h4"><b>FAKE REVIEWS & TESTIMONIALS</b></Typography>
-                    <div className={classes.toolbar} />
+                    <br/>
                     <Grid item className={classes.reviewText}>
                         <Zoom align="right" in={reviewsChecked || isMobile} {...((reviewsChecked || isMobile) && { timeout: 1300 })}>
                             <div>

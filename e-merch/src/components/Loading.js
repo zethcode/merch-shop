@@ -1,6 +1,9 @@
 import { Typography, CircularProgress, Grid } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import { selectComponentMessage } from '../app/loadingComponentSlice'
 
-const Loading = ({ message }) => {
+const Loading = () => {
+    const message = useSelector(selectComponentMessage)
     
     return (
         <Grid 

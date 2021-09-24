@@ -168,11 +168,12 @@ export default makeStyles((theme) => ({
     products: {
         height: '68em',
         overflow: 'hidden',
+        backgroundColor: '#171717'
     },
     productsTitle: {
         marginTop: '1em',
-        color: '#fff',
         fontSize: '3rem',
+        color: 'white',
         [theme.breakpoints.down("lg")]: {
             fontSize: '3rem'
         },
@@ -203,7 +204,7 @@ export default makeStyles((theme) => ({
             borderRadius: '30px'
         },
         '&::-webkit-scrollbar-thumb': {
-            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
             borderRadius: '30px'
         },
     },

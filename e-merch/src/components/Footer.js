@@ -4,6 +4,7 @@ import GoogleIcon from '../assets/icons/google-icon-primary-2.png';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import { makeStyles } from '@material-ui/core';
+import { animateScroll } from 'react-scroll';
 
 const Footer = () => {
     const useStyles = makeStyles((theme) => ({
@@ -26,7 +27,11 @@ const Footer = () => {
     let location = useLocation()
 
     const handleBackToTop = () => {
-        window['scrollTo']({top: 0, behavior: 'smooth'})
+        animateScroll.scrollToTop({
+            duration: 800,
+            delay: 10,
+            smooth: true
+        })
     }
     
     return (    

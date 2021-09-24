@@ -72,8 +72,7 @@ export default makeStyles((theme) => ({
   authButton: {
       marginRight: "0.7rem"
   },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
+  appBarButton: {
+
   }
 }));

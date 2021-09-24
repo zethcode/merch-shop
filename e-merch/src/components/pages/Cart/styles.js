@@ -6,13 +6,7 @@ export default makeStyles((theme) => ({
     marginTop: '3%',
   },
   emptyButton: {
-    minWidth: '150px',
-    [theme.breakpoints.down('xs')]: {
-      marginBottom: '5px',
-    },
-    [theme.breakpoints.up('xs')]: {
-      marginRight: '20px',
-    },
+    minWidth: '100%'
   },
   checkoutButton: {
     minWidth: '100%'
@@ -47,10 +41,15 @@ export default makeStyles((theme) => ({
     },
   },
   summaryContainer: {
-    height: '48em'
+    height: '100%',
   },
   summary: {
-    height: '40em',
-    padding: '15px'
+    height: '100%',
+    padding: '15px',
+    paddingBottom: '20px'
   },
+  summaryText: {
+    justifyContent: 'space-between', 
+    display: 'flex'
+  }
 }));

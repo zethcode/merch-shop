@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '../../app/loadingSlice';
 import { selectCartCount } from '../../app/cartSlice';
 import { GetCart } from '../../services/cart';
+import { Link as Scroll } from 'react-scroll';
 
 const NavBar = () => {
   const { signOutUser, user } = useAuthState()
@@ -21,7 +22,11 @@ const NavBar = () => {
   const cartCount = useSelector(selectCartCount)
   let bgColor = location.pathname === "/tabp-clothing/cart" ? 'rgba(23, 23, 23, 1)' : 'rgba(0, 0, 0, 0.5)'
 
-  // console.log("user info sa navbar", user)
+  useEffect(() => {
+    if (user) {
+      GetCart(dispatch, user)
+    }
+  }, [dispatch, user])
 
   const handleSignOut = useCallback(async () => {
     dispatch(setLoading({isLoading: true}))
@@ -35,21 +40,46 @@ const NavBar = () => {
     }
   }, [dispatch, history, signOutUser])
   
-  useEffect(() => {
-    if (user) {
-      GetCart(dispatch, user)
-    }
-  }, [dispatch, user])
 
   return (
     location.pathname !== "/tabp-clothing/signin" && location.pathname !== "/tabp-clothing/signup" &&
     <Slide appear={false} direction="down" in={!trigger}>
       <AppBar className={classes.appBar} position="fixed" elevation={0} style={{backgroundColor: `${bgColor}`}}>
         <Toolbar disableGutters>
-          <Button component={Link} to="/tabp-clothing">
-            <img className={classes.logo} alt="tabp-logo" src={logo} />
+          {location.pathname === "/tabp-clothing" ? 
+            <Scroll to="home-root" smooth={true}>
+                <Button className={classes.appBarButton} color="inherit">
+                  <img className={classes.logo} alt="tabp-logo" src={logo} />
+                </Button>
+            </Scroll>
+            :
+            <Button component={Link} to="/tabp-clothing">
+              <img className={classes.logo} alt="tabp-logo" src={logo} />
+            </Button>
+          }
+          {location.pathname !== '/tabp-clothing/cart' ?
+          <>
+          <Scroll to="about-section" smooth={true}>
+              <Button color="inherit">
+              About
+            </Button>
+          </Scroll>
+          <Scroll to="products-section" smooth={true}>
+            <Button color="inherit">
+              Shop
+            </Button>
+          </Scroll>
+          <Scroll to="reviews-section" smooth={true}>
+            <Button color="inherit">
+              Reviews
+            </Button>
+          </Scroll>
+          </>
+          :
+          <Button color="inherit" component={Link} to="/tabp-clothing">
+            Home
           </Button>
-
+          }
           <div className={classes.grow} />
           {user !== null ?
           <>
@@ -60,16 +90,18 @@ const NavBar = () => {
                 </Badge>
               </IconButton>
           </div>
-          <Button className={classes.authButton} color="inherit" onClick={handleSignOut}>
-            Logout
-          </Button>
+          <div>
+            <Button className={classes.authButton} color="inherit" onClick={handleSignOut}>
+              Logout
+            </Button>
+          </div>
           </>
           :
           <> <Button color="inherit" component={Link} to='/tabp-clothing/signin'>
-            SIGN IN
+            Sign In
           </Button>
           <Button className={classes.authButton} color="inherit" component={Link} to='/tabp-clothing/signup'>
-            REGISTER
+            Register
           </Button> </>}
           <LoadingBackdrop />
         </Toolbar>

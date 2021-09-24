@@ -3,17 +3,24 @@ import { makeStyles } from "@material-ui/core";
 export default makeStyles((theme) => ({
     root: {
         maxWidth: '100%',
-        background: 'rgba(0, 0, 0, 0.5)',
+        background: 'rgba(28, 28, 28, 0.85)',
         color: '#fff',
         height: '100%',
+        borderRadius: '15px'
     },
     media: {
       height: 0,
       paddingTop: '90%', // 16:9
+      margin: '5px',
+      backgroundColor: 'rgba(28, 28, 28, 1)',
+      borderTopRightRadius: '15px',
+      borderTopLeftRadius: '15px',
     },
     cardActions: {
-      display: 'flex',
       justifyContent: 'space-between',
+      padding: '10px',
+      backgroundColor: 'rgba(28, 28, 28, 1)',
+      color: '#fff'
     },
     cardContent: {
       display: 'flex',
