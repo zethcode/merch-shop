@@ -30,10 +30,11 @@ const Cart = () => {
     const isCartLoading = useSelector(selectLoadingComponentStatus)
     const loadingComponent = useSelector(selectComponent)
 
+    // Transition components
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
     });
-    
+  
     // Empty cart pop up handlers
     const handleClickOpen = () => {
         setOpen(true)
@@ -51,7 +52,13 @@ const Cart = () => {
 
     // Order checkout handler
     const handleCheckout = () => {
-        console.log("Checking out...")
+        // Show snackbar notification for In Progress status
+        dispatch(setAlert({
+            isOpen: true,
+            success: false,
+            severity: "info",
+            message: "Sorry. The checkout feature is still under development."
+        }))
     }
 
     useEffect(() => {
@@ -170,7 +177,7 @@ const Cart = () => {
 
     return (
         <div style={{backgroundColor: "rgb(0, 0, 0, 0.1)"}} name="cartHeader">
-            <Container style={{minHeight: "72.8vh"}}>
+            <Container style={{height: "60em"}}>
                 <div className={classes.toolbar} />
                 <Typography className={classes.title} variant="h4" gutterBottom>Cart Items</Typography><br/>
                 {isCartLoading && loadingComponent === "cart" ? <Loading /> : (!cart.length ? <EmptyCart /> : <FilledCart />)}

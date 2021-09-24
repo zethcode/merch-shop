@@ -59,7 +59,7 @@ const NavBar = () => {
               <img className={classes.logo} alt="tabp-logo" src={logo} />
             </Button>
           }
-          {location.pathname !== '/tabp-clothing/cart' && user !== null ?
+          {location.pathname !== '/tabp-clothing/cart' ?
           <>
           &nbsp;
           <Scroll to="about-section" smooth={true}>

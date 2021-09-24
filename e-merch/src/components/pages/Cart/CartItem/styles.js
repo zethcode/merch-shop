@@ -2,17 +2,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
-  cardMedia: {
-    height: 0,
-    paddingTop: '90%',
-  },
-  cardContent: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  cartActions: {
-    justifyContent: 'space-between',
-  },
   buttons: {
     display: 'flex',
     alignItems: 'right',
@@ -79,6 +68,8 @@ export default makeStyles((theme) => ({
     height: '100px',
     width: '100px',
     marginRight: '10px',
+    transition: "transform 0.15s ease-in-out",
+    "&:hover": { transform: "scale3d(1.2, 1.2, 1)" }
   },
   itemDetails: {
     flex: 1,

@@ -31,14 +31,15 @@ export default makeStyles((theme) => ({
         width: '0.4em'
     },
     '&::-webkit-scrollbar-track': {
-        boxShadow: 'inset 0 0 6px rgba(0, 0, 0)',
-        webkitBoxShadow: 'inset 0 0 6px rgba(0, 0, 0)',
+        boxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
+        webkitBoxShadow: 'inset 0 0 6px rrgba(0, 0, 0, 0.3)',
         borderRadius: '30px'
     },
     '&::-webkit-scrollbar-thumb': {
-        backgroundColor: 'rgba(255, 255, 255, 0.6)',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
         borderRadius: '30px'
     },
+    paddingBottom: 0
   },
   summaryContainer: {
     height: '100%',

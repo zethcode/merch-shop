@@ -1,4 +1,4 @@
-import { Container, CssBaseline, Grid, Typography, Slide, Link, Zoom, Paper, Box } from '@material-ui/core';
+import { Container, CssBaseline, Grid, Typography, Slide, Link, Zoom, Box } from '@material-ui/core';
 import { useState, useEffect } from 'react';
 import { Parallax } from 'react-parallax';
 import titleBG from './../../../assets/images/group-men-car.jpg';
@@ -58,10 +58,10 @@ const Home = () => {
             {isLoading && <LoadingBackdrop />}
             <Parallax className={classes.header} bgImage={titleBG} bgImageAlt="Explore Style" strength={400}>
                 <div className={classes.darkBG}>
-                    <Container className={classes.headerContainer} direction="column" >
-                        <Grid container justifyContent="center" alignItems="center" style={{overflow: 'hidden'}}>
+                    <Container className={classes.headerContainer}>
+                        <Grid container direction="row" justifyContent="center" style={{overflow: 'hidden'}}>
                             <Slide direction="up" in={headerChecked} {...(headerChecked && { timeout: 1000 })}>
-                                <Grid item>
+                                <Grid item align="center">
                                     <Typography className={classes.headerTitle} variant="h1">Tela At Iba Pa</Typography>
                                     <Typography className={classes.headerTitle2} variant="h3">Clothing Company</Typography><br/>
                                     <Typography className={classes.headerSubtitle} variant="subtitle1">Explore your style. Never be afraid to express yourself through fashion.</Typography>

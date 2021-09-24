@@ -2,11 +2,16 @@ import { makeStyles } from "@material-ui/core";
 
 export default makeStyles((theme) => ({
     root: {
-        maxWidth: '100%',
-        background: 'rgba(28, 28, 28, 0.85)',
-        color: '#fff',
-        height: '100%',
-        borderRadius: '15px'
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      maxWidth: '100%',
+      background: 'rgba(28, 28, 28, 0.85)',
+      color: '#fff',
+      height: '100%',
+      borderRadius: '15px',
+      transition: "transform 0.15s ease-in-out",
+      "&:hover": { transform: "scale3d(1.05, 1.05, 1)" },
     },
     media: {
       height: 0,
@@ -20,7 +25,7 @@ export default makeStyles((theme) => ({
       justifyContent: 'space-between',
       padding: '10px',
       backgroundColor: 'rgba(28, 28, 28, 1)',
-      color: '#fff'
+      color: '#fff',
     },
     cardContent: {
       display: 'flex',

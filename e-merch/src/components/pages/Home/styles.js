@@ -14,42 +14,16 @@ export default makeStyles((theme) => ({
         backgroundColor: theme.palette.background.default,
         padding: theme.spacing(3)
     },
+    header: {
+        // height: '100vh'
+    },
     headerContainer: {
-        flex: 1,
         height: '100vh',
         overflow: 'hidden',
         color: '#fff',
-        textAlign: 'center',
-        alignContent: 'center',
-        justifyContent: 'center',
-        paddingLeft: '10em',
-        paddingRight: '10em',
-        paddingTop: '21em',
-        [theme.breakpoints.down("lg")]: {
-            height: '100vh',
-            paddingLeft: '7em',
-            paddingRight: '7em',
-        },
-        [theme.breakpoints.down("md")]: {
-            height: '100vh',
-            paddingLeft: '7em',
-            paddingRight: '7em',
-            paddingTop: '30vh',
-        },
-        [theme.breakpoints.down("sm")]: {
-            height: '35em',
-            paddingLeft: '3em',
-            paddingRight: '3em',
-            paddingTop: '11em',
-            minHeight: '25em',
-        },
-        [theme.breakpoints.down("xs")]: {
-            height: '25em',
-            paddingLeft: '3em',
-            paddingRight: '3em',
-            paddingTop: '7em',
-            minHeight: '25em',
-        },
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+        display: 'flex'
     },
     darkBG: {
         backgroundColor: 'rgba(0, 0, 0, 0.17)'
@@ -60,23 +34,17 @@ export default makeStyles((theme) => ({
         [theme.breakpoints.down("lg")]: {
             fontSize: "8rem"
         },
-        [theme.breakpoints.down("md")]: {
-            fontSize: "7rem"
-        },
         [theme.breakpoints.down("sm")]: {
-            fontSize: "4rem"
+            fontSize: "5rem"
         },
         [theme.breakpoints.down("xs")]: {
-            fontSize: "3rem"
+            fontSize: "4rem"
         }
     },
     headerTitle2: {
         fontSize: "5rem",
         [theme.breakpoints.down("lg")]: {
             fontSize: "5rem"
-        },
-        [theme.breakpoints.down("md")]: {
-            fontSize: "4rem"
         },
         [theme.breakpoints.down("sm")]: {
             fontSize: "2.5rem"
@@ -90,11 +58,8 @@ export default makeStyles((theme) => ({
         [theme.breakpoints.down("lg")]: {
             fontSize: "1.5rem"
         },
-        [theme.breakpoints.down("md")]: {
+        [theme.breakpoints.down("sm")]: {
             fontSize: "1rem"
-        },
-        [theme.breakpoints.down("xs")]: {
-            fontSize: "0.7rem"
         }
     },
     about: {
