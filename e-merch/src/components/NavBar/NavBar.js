@@ -9,6 +9,7 @@ import { useAuthState } from './../../firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '../../app/loadingSlice';
 import { selectCartCount } from '../../app/cartSlice';
+import { selectLoadingStatus } from '../../app/loadingSlice';
 import { GetCart } from '../../services/cart';
 import { Link as Scroll } from 'react-scroll';
 
@@ -19,6 +20,7 @@ const NavBar = () => {
   const history = useHistory()
   const classes = useStyles()
   const trigger = useScrollTrigger()
+  const isLoading = useSelector(selectLoadingStatus)
   const cartCount = useSelector(selectCartCount)
   let bgColor = location.pathname === "/tabp-clothing/cart" ? 'rgba(23, 23, 23, 1)' : 'rgba(0, 0, 0, 0.5)'
 
@@ -45,7 +47,7 @@ const NavBar = () => {
     location.pathname !== "/tabp-clothing/signin" && location.pathname !== "/tabp-clothing/signup" &&
     <Slide appear={false} direction="down" in={!trigger}>
       <AppBar className={classes.appBar} position="fixed" elevation={0} style={{backgroundColor: `${bgColor}`}}>
-        <Toolbar disableGutters>
+        <Toolbar variant="dense" disableGutters>
           {location.pathname === "/tabp-clothing" ? 
             <Scroll to="home-root" smooth={true}>
                 <Button className={classes.appBarButton} color="inherit">
@@ -53,30 +55,31 @@ const NavBar = () => {
                 </Button>
             </Scroll>
             :
-            <Button component={Link} to="/tabp-clothing">
+            <Button className={classes.appBarButton} style={{width: '199px'}} component={Link} to="/tabp-clothing">
               <img className={classes.logo} alt="tabp-logo" src={logo} />
             </Button>
           }
-          {location.pathname !== '/tabp-clothing/cart' ?
+          {location.pathname !== '/tabp-clothing/cart' && user !== null ?
           <>
+          &nbsp;
           <Scroll to="about-section" smooth={true}>
-              <Button color="inherit">
+              <Button className={classes.appBarButton} color="inherit">
               About
             </Button>
           </Scroll>
           <Scroll to="products-section" smooth={true}>
-            <Button color="inherit">
+            <Button className={classes.appBarButton} color="inherit">
               Shop
             </Button>
           </Scroll>
           <Scroll to="reviews-section" smooth={true}>
-            <Button color="inherit">
+            <Button className={classes.appBarButton} color="inherit">
               Reviews
             </Button>
           </Scroll>
           </>
-          :
-          <Button color="inherit" component={Link} to="/tabp-clothing">
+          : user !== null &&
+          <Button className={classes.appBarButton} style={{width: '90px'}} color="inherit" component={Link} to="/tabp-clothing">
             Home
           </Button>
           }
@@ -91,19 +94,19 @@ const NavBar = () => {
               </IconButton>
           </div>
           <div>
-            <Button className={classes.authButton} color="inherit" onClick={handleSignOut}>
+            <Button className={classes.appBarButton} color="inherit" onClick={handleSignOut}>
               Logout
             </Button>
           </div>
           </>
           :
-          <> <Button color="inherit" component={Link} to='/tabp-clothing/signin'>
+          <> <Button className={classes.appBarButton} style={{width: '90px'}} color="inherit" component={Link} to='/tabp-clothing/signin'>
             Sign In
           </Button>
-          <Button className={classes.authButton} color="inherit" component={Link} to='/tabp-clothing/signup'>
+          <Button className={classes.appBarButton} style={{width: '90px'}} color="inherit" component={Link} to='/tabp-clothing/signup'>
             Register
           </Button> </>}
-          <LoadingBackdrop />
+          {isLoading && <LoadingBackdrop />}
         </Toolbar>
       </AppBar>
     </Slide>

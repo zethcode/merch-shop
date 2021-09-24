@@ -4,6 +4,7 @@ import cartSlice from './cartSlice';
 import snackbarSlice from './snackbarSlice';
 import loadingSlice from './loadingSlice';
 import loadingComponentSlice from './loadingComponentSlice';
+import productsSlice from './productsSlice';
 
 export default configureStore({
     reducer: {
@@ -11,6 +12,7 @@ export default configureStore({
         cart: cartSlice,
         snackbar: snackbarSlice,
         loading: loadingSlice,
-        loadingComponent: loadingComponentSlice
+        loadingComponent: loadingComponentSlice,
+        products: productsSlice
     }
 })

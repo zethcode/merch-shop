@@ -10,7 +10,7 @@ import LoadingBackdrop from '../../LoadingBackdrop';
 import { useAuthState } from '../../../firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectLoadingStatus } from '../../../app/loadingSlice';
-import { selectLoadingComponentStatus } from '../../../app/loadingComponentSlice';
+import { selectLoadingComponentStatus, selectComponent } from '../../../app/loadingComponentSlice';
 import { setAlert, selectIsOpen } from '../../../app/snackbarSlice';
 import { selectCart } from '../../../app/cartSlice';
 import { DeleteCart } from '../../../services/cart';
@@ -28,6 +28,7 @@ const Cart = () => {
     const snackbarOpen = useSelector(selectIsOpen)
     const isLoading = useSelector(selectLoadingStatus)
     const isCartLoading = useSelector(selectLoadingComponentStatus)
+    const loadingComponent = useSelector(selectComponent)
 
     const Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
@@ -172,7 +173,7 @@ const Cart = () => {
             <Container style={{minHeight: "72.8vh"}}>
                 <div className={classes.toolbar} />
                 <Typography className={classes.title} variant="h4" gutterBottom>Cart Items</Typography><br/>
-                {isCartLoading ? <Loading /> : (!cart.length ? <EmptyCart /> : <FilledCart />)}
+                {isCartLoading && loadingComponent === "cart" ? <Loading /> : (!cart.length ? <EmptyCart /> : <FilledCart />)}
                 {snackbarOpen && <SnackbarAlert />}
                 {isLoading && <LoadingBackdrop />}
             </Container>

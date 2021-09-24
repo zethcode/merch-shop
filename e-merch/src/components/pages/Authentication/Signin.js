@@ -7,13 +7,14 @@ import { useForm } from 'react-hook-form';
 import useStyles from './styles';
 import LoadingBackdrop from '../../LoadingBackdrop';
 import { useAuthState } from './../../../firebase';
-import { setLoading } from '../../../app/loadingSlice';
-import { useDispatch } from 'react-redux';
+import { setLoading, selectLoadingStatus } from '../../../app/loadingSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Signin = () => {
     const { register, handleSubmit, formState: { errors } } = useForm({}) 
     const [signinFailed, setSigninFailed] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
+    const isLoading = useSelector(selectLoadingStatus)
     const { signIn } = useAuthState()
     const dispatch = useDispatch()
     const classes = useStyles()
@@ -43,7 +44,7 @@ const Signin = () => {
 
     return (
         <div className={classes.root}>
-            <LoadingBackdrop />
+            {isLoading && <LoadingBackdrop />}
             <Container className={classes.content}>
                 <div className={classes.toolbar} />
                 <Paper 

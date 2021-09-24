@@ -1,10 +1,9 @@
-import { makeStyles, alpha } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 const drawerWidth = 0;
 
 export default makeStyles((theme) => ({
   appBar: {
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
     boxShadow: 'none',
     [theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`,
@@ -29,50 +28,25 @@ export default makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'inherit',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
   logo: {
     width: "135px",
-    height: "50px"
-  },
-  authButton: {
-      marginRight: "0.7rem"
+    height: "50px",
+    [theme.breakpoints.down('sm')]: {
+      width: "95px",
+      height: "35px"
+    },
   },
   appBarButton: {
-
+    height: '60px',
+    width: '100%',
+    color: '#fff',
+    borderRadius: 0,
+    '&:hover': {
+      backgroundColor: 'rgb(255, 255, 255, 0.5)',
+      color: '#171717',
+    },
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '12px'
+    },
   }
 }));
