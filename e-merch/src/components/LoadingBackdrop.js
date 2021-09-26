@@ -1,27 +1,23 @@
-import { Backdrop, CircularProgress } from '@material-ui/core';
-import { forwardRef, createRef, innerRef } from 'react';
+import { Backdrop, CircularProgress, makeStyles } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import { selectLoadingStatus } from '../app/loadingSlice';
 
-const LoadingBackdrop = (props) => {
+const useStyles = makeStyles((theme) => ({
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    }
+}));
+
+const LoadingBackdrop = () => {
+    const isLoading = useSelector(selectLoadingStatus)
+    const classes = useStyles()
+
     return (
-        <Backdrop {...props}>
+        <Backdrop className={classes.backdrop} open={isLoading}>
             <CircularProgress color="inherit" />
         </Backdrop>
     )
 }
-
-// const loadingRef = createRef(null)
-
-// const BackdropRef = forwardRef((props, ref) => {
-//     return <Backdrop forwardRef={ref} {...props} />;
-// });
-
-// const LoadingBackdrop = forwardRef((props, ref) => 
-//     // console.log("ang loading ref", loadingRef)
-//     (
-//         <Backdrop {...props} innerRef={ref}>
-//             <CircularProgress color="inherit" />
-//         </Backdrop>
-//     )
-// )
 
 export default LoadingBackdrop
