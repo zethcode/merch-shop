@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/tabp-clothing/static/css/main.fa7fd17b.chunk.css",
-    "main.js": "/tabp-clothing/static/js/main.79cb175d.chunk.js",
-    "main.js.map": "/tabp-clothing/static/js/main.79cb175d.chunk.js.map",
+    "main.js": "/tabp-clothing/static/js/main.f35bf917.chunk.js",
+    "main.js.map": "/tabp-clothing/static/js/main.f35bf917.chunk.js.map",
     "runtime-main.js": "/tabp-clothing/static/js/runtime-main.a4f878f3.js",
     "runtime-main.js.map": "/tabp-clothing/static/js/runtime-main.a4f878f3.js.map",
-    "static/js/2.3dd98182.chunk.js": "/tabp-clothing/static/js/2.3dd98182.chunk.js",
-    "static/js/2.3dd98182.chunk.js.map": "/tabp-clothing/static/js/2.3dd98182.chunk.js.map",
+    "static/js/2.710a6351.chunk.js": "/tabp-clothing/static/js/2.710a6351.chunk.js",
+    "static/js/2.710a6351.chunk.js.map": "/tabp-clothing/static/js/2.710a6351.chunk.js.map",
     "static/js/3.151fbbda.chunk.js": "/tabp-clothing/static/js/3.151fbbda.chunk.js",
     "static/js/3.151fbbda.chunk.js.map": "/tabp-clothing/static/js/3.151fbbda.chunk.js.map",
     "index.html": "/tabp-clothing/index.html",
     "static/css/main.fa7fd17b.chunk.css.map": "/tabp-clothing/static/css/main.fa7fd17b.chunk.css.map",
-    "static/js/2.3dd98182.chunk.js.LICENSE.txt": "/tabp-clothing/static/js/2.3dd98182.chunk.js.LICENSE.txt",
+    "static/js/2.710a6351.chunk.js.LICENSE.txt": "/tabp-clothing/static/js/2.710a6351.chunk.js.LICENSE.txt",
     "static/media/bnw-graffiti-wall-low.74e2d6bd.jpg": "/tabp-clothing/static/media/bnw-graffiti-wall-low.74e2d6bd.jpg",
     "static/media/clothes-rack.08417d0d.jpg": "/tabp-clothing/static/media/clothes-rack.08417d0d.jpg",
     "static/media/group-men-car.5a0d56f7.jpg": "/tabp-clothing/static/media/group-men-car.5a0d56f7.jpg",
@@ -20,8 +20,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.a4f878f3.js",
-    "static/js/2.3dd98182.chunk.js",
+    "static/js/2.710a6351.chunk.js",
     "static/css/main.fa7fd17b.chunk.css",
-    "static/js/main.79cb175d.chunk.js"
+    "static/js/main.f35bf917.chunk.js"
   ]
 }
