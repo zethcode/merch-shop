@@ -1,14 +1,15 @@
 import { FormControl, Grid, TextField, Button, InputLabel, Input, InputAdornment, IconButton, Typography, FormHelperText, Container, Paper } from '@material-ui/core';
 import authLogo from './../../../assets/logo/tabp-black-on-transparent.png';
+import { setLoading, selectLoadingStatus } from '../../../app/loadingSlice';
+import { setAlert } from '../../../app/snackbarSlice';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
-import { useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import LoadingBackdrop from '../../LoadingBackdrop';
 import { useHistory, Link } from 'react-router-dom';
+import { useAuthState } from './../../../firebase';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useStyles from './styles';
-import LoadingBackdrop from '../../LoadingBackdrop';
-import { useAuthState } from './../../../firebase';
-import { setLoading, selectLoadingStatus } from '../../../app/loadingSlice';
-import { useDispatch, useSelector } from 'react-redux';
 
 const Signin = () => {
     const { register, handleSubmit, formState: { errors } } = useForm({}) 
@@ -28,6 +29,15 @@ const Signin = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+
+    const handleForgotPassword = () => {
+        dispatch(setAlert({
+            isOpen: true,
+            success: false,
+            severity: "info",
+            message: "Sorry. The forgot password feature is still under development."
+        }))
+    }
 
     // Submit handler
     const handleLogin = useCallback(async values => {
@@ -108,9 +118,9 @@ const Signin = () => {
                                 />
                             </FormControl>
                             <br />
-                            <Typography variant="subtitle2" align="right">
-                                <Link className={classes.link} to="/" variant="subtitle2" onClick={() => console.log("Insert forgot passwod functionality here.")}>Forgot password?</Link>
-                            </Typography>
+                            {/* <Typography variant="subtitle2" align="right">
+                                <Link className={classes.link} to="#" variant="subtitle2" onClick={() => handleForgotPassword()}>Forgot password?</Link>
+                            </Typography> */}
                             <Grid item align="center">
                                 <Button className={classes.submitButton} variant="contained" color="primary" type="submit" disableElevation>Sign In</Button>
                             </Grid>

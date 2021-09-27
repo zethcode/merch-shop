@@ -52,7 +52,6 @@ const Cart = () => {
 
     // Order checkout handler
     const handleCheckout = () => {
-        // Show snackbar notification for In Progress status
         dispatch(setAlert({
             isOpen: true,
             success: false,
