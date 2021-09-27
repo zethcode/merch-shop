@@ -110,24 +110,24 @@ const Cart = () => {
                         Order Summary
                     </Box>
                     <br/>
-                    <Box className={classes.summaryText}>
-                        <Typography variant="subtitle2">
+                    <Box className={classes.summaryTextBox}>
+                        <Typography className={classes.summaryText} variant="subtitle2">
                             Subtotal ({itemQuantity} items): 
                         </Typography>
-                        <Typography variant="subtitle2">
+                        <Typography className={classes.summaryText} variant="subtitle2">
                             &#8369;{subTotal}
                         </Typography>
                     </Box>
-                    <Box className={classes.summaryText}>
-                        <Typography variant="subtitle2">
+                    <Box className={classes.summaryTextBox}>
+                        <Typography className={classes.summaryText} variant="subtitle2">
                             Shipping Fee:
                         </Typography>
-                        <Typography variant="subtitle2">
+                        <Typography className={classes.summaryText} variant="subtitle2">
                             &#8369;{itemQuantity*100}
                         </Typography>
                     </Box>
                     <br/>
-                    <Box className={classes.summaryText}>
+                    <Box>
                         <Typography>
                             <b>Total:</b>
                         </Typography>

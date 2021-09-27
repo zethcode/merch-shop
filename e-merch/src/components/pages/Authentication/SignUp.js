@@ -7,12 +7,13 @@ import { useAuthState } from './../../../firebase';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import useStyles from './styles';
-import { setLoading } from '../../../app/loadingSlice';
-import { useDispatch } from 'react-redux';
+import { setLoading, selectLoadingStatus } from '../../../app/loadingSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Signup = () => {
     const { register, handleSubmit, formState: { errors }, watch } = useForm({})
     const [showPassword, setShowPassword] = useState(false)
+    const isLoading = useSelector(selectLoadingStatus)
     const { signUp } = useAuthState()
     const dispatch = useDispatch()
     const classes = useStyles()
@@ -51,7 +52,7 @@ const Signup = () => {
 
     return (
         <div className={classes.root}>
-            <LoadingBackdrop />
+            {isLoading && <LoadingBackdrop />}
             <Container className={classes.content}>
                 <div className={classes.toolbar} />
                 <Paper 

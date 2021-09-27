@@ -49,8 +49,13 @@ export default makeStyles((theme) => ({
     padding: '15px',
     paddingBottom: '20px'
   },
-  summaryText: {
+  summaryTextBox: {
     justifyContent: 'space-between', 
     display: 'flex'
+  },
+  summaryText: {
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '13px',
+    }
   }
 }));

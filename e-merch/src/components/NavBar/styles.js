@@ -35,12 +35,17 @@ export default makeStyles((theme) => ({
       width: "95px",
       height: "35px"
     },
+    [theme.breakpoints.down('xs')]: {
+      width: "95px",
+      height: "35px"
+    },
   },
   appBarButton: {
     height: '60px',
     width: '100%',
     color: '#fff',
     borderRadius: 0,
+    padding: 0,
     '&:hover': {
       backgroundColor: 'rgb(255, 255, 255, 0.5)',
       color: '#171717',
@@ -48,5 +53,19 @@ export default makeStyles((theme) => ({
     [theme.breakpoints.down('xs')]: {
       fontSize: '12px'
     },
+  },
+  appBarButtonCart: {
+    height: '60px',
+    width: '140px',
+    color: '#fff',
+    borderRadius: 0,
+    padding: 0,
+    '&:hover': {
+      backgroundColor: 'rgb(255, 255, 255, 0.5)',
+      color: '#171717',
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '105px'
+    }
   }
 }));

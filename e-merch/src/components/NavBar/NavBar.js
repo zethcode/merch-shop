@@ -55,7 +55,7 @@ const NavBar = () => {
                 </Button>
             </Scroll>
             :
-            <Button className={classes.appBarButton} style={{width: '199px'}} component={Link} to="/tabp-clothing">
+            <Button className={classes.appBarButtonCart} component={Link} to="/tabp-clothing">
               <img className={classes.logo} alt="tabp-logo" src={logo} />
             </Button>
           }
@@ -63,7 +63,7 @@ const NavBar = () => {
           <>
           &nbsp;
           <Scroll to="about-section" smooth={true}>
-              <Button className={classes.appBarButton} color="inherit">
+              <Button className={classes.appBarButton} style={{marginLeft: '10px'}} color="inherit">
               About
             </Button>
           </Scroll>
@@ -94,7 +94,7 @@ const NavBar = () => {
               </IconButton>
           </div>
           <div>
-            <Button className={classes.appBarButton} color="inherit" onClick={handleSignOut}>
+            <Button className={classes.appBarButton} style={{marginRight: '20px'}} color="inherit" onClick={handleSignOut}>
               Logout
             </Button>
           </div>
